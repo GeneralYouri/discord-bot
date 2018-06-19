@@ -8,8 +8,17 @@ client.on('ready', () => {
 });
 
 client.on('message', (msg) => {
-    // const { content: txt, channel: ch, guild } = msg;
-    if (!msg.content.startsWith(config.prefix) || msg.author.bot) {
+    if (msg.author.bot) {
+        return;
+    }
+
+    // TODO: Make the username match dynamic / Add Araniir
+    if (msg.author.username === 'Youri' && msg.content.includes('[')) {
+        msg.channel.send(`${msg.author} said: ${msg.content.replace(/\[/g, 'p')}`);
+        // msg.reply('oh, ik zie dat je pP het niet doet, alsjeblieft');
+    }
+
+    if (!msg.content.startsWith(config.prefix)) {
         return;
     }
 
@@ -18,8 +27,10 @@ client.on('message', (msg) => {
 
     if (command === 'ping') {
         msg.reply('pong');
-    } else {
+    } else if (command === 'pong') {
         msg.reply('ping');
+    } else if (command === 'pp') {
+        msg.reply('pP');
     }
 
     console.log('Handled message:', msg.content);
