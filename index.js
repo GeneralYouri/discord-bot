@@ -1,12 +1,15 @@
+const Discord = require('discord.js');
 
+const client = new Discord.Client();
 
-function main() {
-    console.log('Hello World');
-}
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+});
 
-module.exports.main = main;
-module.exports.default = module.exports;
+client.on('message', (msg) => {
+    if (msg.content === 'ping') {
+        msg.channel.send('pong');
+    }
+});
 
-if (module === require.main) {
-    module.exports.main();
-}
+client.login('NDU4NzU2OTQyNjUxODUwNzY1.DgsTdA.rWcAGwcDLYnIZoaKcEMyTd9TjCc');

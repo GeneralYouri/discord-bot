@@ -2,6 +2,13 @@
 module.exports = {
     root: true,
     extends: 'airbnb-base',
+    env: {
+        node: true,
+        es6: true,
+    },
+    parserOptions: {
+        ecmaVersion: 2018,
+    },
     rules: {
         // don't require .js extension when importing
         'import/extensions': [2, 'always', {
