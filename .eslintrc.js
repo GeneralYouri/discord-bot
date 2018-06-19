@@ -1,21 +1,39 @@
+// http://eslint.org/docs/user-guide/configuring
 module.exports = {
+    root: true,
     extends: 'airbnb-base',
     rules: {
-        // Allow debugger during development
+        // don't require .js extension when importing
+        'import/extensions': [2, 'always', {
+            'js': 'never',
+        }],
+        // allow optionalDependencies
+        'import/no-extraneous-dependencies': [2, {
+            'optionalDependencies': ['test/unit/index.js']
+        }],
+        // allow debugger during development
         'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-        // Allow console during development
+        // allow console during development
         'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
 
         // Other custom rules
         'max-len': 0,
-        indent: ['error', 4],
-        'no-param-reassign': ['error', {
+        indent: [2, 4],
+        'no-param-reassign': [1, {
             props: true,
             ignorePropertyModificationsFor: [
                 'acc', // for reduce accumulators
                 'e', // for e.returnvalue
+                'ctx', // for Koa routing
+                'req', // for Express requests
+                'request', // for Express requests
+                'res', // for Express responses
+                'response', // for Express responses
+                '$scope', // for Angular 1 scopes
                 'state', // for Vuex state handling
-            ],
+                'opts', // for handling/resolving options objects
+                'options', // for handling/resolving options objects
+            ]
         }],
 
         // Operator precedence is a thing for a reason; there are plenty of cases where forcing extra brackets does not lead to an improvement
@@ -33,7 +51,16 @@ module.exports = {
         // Even AirBnB themselves allow this, just use with caution
         'no-bitwise': 0,
 
-        /** @see https://github.com/airbnb/javascript#modules--no-webpack-loader-syntax */
-        'import/no-webpack-loader-syntax': 2,
+        // Specifying unused function arguments isn't a problem and can add clarity
+        // Also move this to a warning instead of an error as it can otherwise be REALLY annoying during development
+        /** @see https://blog.javascripting.com/2015/09/07/fine-tuning-airbnbs-eslint-config/ */
+        'no-unused-vars': [1, {
+            'vars': 'local',
+            'args': 'none',
+        }],
+
+        // In some cases it can be way more logical to use an else return, allow both styles
+        /** @see https://blog.javascripting.com/2015/09/07/fine-tuning-airbnbs-eslint-config/ */
+        'no-else-return': 0,
     },
 };
