@@ -1,3 +1,4 @@
+const Big = require('big.js');
 const Discord = require('discord.js');
 const config = require('./config.json');
 
@@ -13,7 +14,7 @@ client.on('message', (msg) => {
     }
 
     // TODO: Make the username match dynamic / Add Araniir
-    if (msg.author.username === 'Youri' && msg.content.includes('[')) {
+    if (config.autoP.includes(msg.author.username) && msg.content.includes('[')) {
         msg.channel.send(`${msg.author} said: ${msg.content.replace(/\[/g, 'p')}`);
         // msg.reply('oh, ik zie dat je pP het niet doet, alsjeblieft');
     }
@@ -22,14 +23,20 @@ client.on('message', (msg) => {
         return;
     }
 
-    const args = msg.content.slice(config.prefix.length).split(/\s+/g);
+    const noPrefix = msg.content.slice(config.prefix.length);
+    const args = noPrefix.split(/\s+/g);
     const command = args.shift().toLowerCase();
 
     if (command === 'ping') {
         msg.reply('pong');
     } else if (command === 'pong') {
         msg.reply('ping');
-    } else if (command === 'pp') {
+    } else if (command === 'debsey') {
+        const startDate = new Date(2013, 3, 1);
+        const debtDays = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+        const debt = new Big(2).pow(debtDays);
+        msg.reply(`Djessey's debt is currently ${debtDays} days old, for a total accumulated debt of ${debt.toExponential(2)} sausage rolls`);
+    } else if (noPrefix === 'pP') {
         msg.reply('pP');
     }
 
