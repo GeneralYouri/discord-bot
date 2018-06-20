@@ -16,7 +16,6 @@ client.on('message', (msg) => {
     // TODO: Make the username match dynamic / Add Araniir
     if (config.autoP.includes(msg.author.username) && msg.content.includes('[')) {
         msg.channel.send(`${msg.author} said: ${msg.content.replace(/\[/g, 'p')}`);
-        // msg.reply('oh, ik zie dat je pP het niet doet, alsjeblieft');
     }
 
     if (!msg.content.startsWith(config.prefix)) {
@@ -31,7 +30,7 @@ client.on('message', (msg) => {
         msg.reply('pong');
     } else if (command === 'pong') {
         msg.reply('ping');
-    } else if (command === 'debsey') {
+    } else if (command === 'debtsey') {
         const debtStart = new Date(config.debtStart);
         const debtDays = Math.floor((Date.now() - debtStart.getTime()) / (1000 * 60 * 60 * 24));
         const debt = new Big(2).pow(debtDays);
