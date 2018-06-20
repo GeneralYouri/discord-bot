@@ -32,8 +32,8 @@ client.on('message', (msg) => {
     } else if (command === 'pong') {
         msg.reply('ping');
     } else if (command === 'debsey') {
-        const startDate = new Date(2013, 3, 1);
-        const debtDays = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+        const debtStart = new Date(config.debtStart);
+        const debtDays = Math.floor((Date.now() - debtStart.getTime()) / (1000 * 60 * 60 * 24));
         const debt = new Big(2).pow(debtDays);
         msg.reply(`Djessey's debt is currently ${debtDays} days old, for a total accumulated debt of ${debt.toExponential(2)} sausage rolls`);
     } else if (noPrefix === 'pP') {
