@@ -14,8 +14,9 @@ client.on('message', (msg) => {
     }
 
     // TODO: Make the username match dynamic / Add Araniir
-    if (config.autoP.includes(msg.author.username) && msg.content.includes('[')) {
-        msg.channel.send(`${msg.author} said: ${msg.content.replace(/\[/g, 'p').replace(/]/g, 'P')}`);
+    if (config.autoP.includes(msg.author.username) && (msg.content.includes('[') || msg.content.includes(']'))) {
+        const sanitized = msg.content.replace(/\[/g, 'p').replace(/]/g, 'P');
+        msg.channel.send(`${msg.author} said: ${sanitized}`);
     }
 
     if (!msg.content.startsWith(config.prefix)) {
