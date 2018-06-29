@@ -58,6 +58,12 @@ client.on('message', (msg) => {
             } else if (falsies.includes(args[0])) {
                 config.autoP.enabled = false;
                 msg.channel.send('Disabled Auto P Dispenser');
+            } else if (args[0] === 'join') {
+                config.autoP.users.add(msg.author.username);
+                msg.channel.send('Auto P Dispenser users: ' + Array.from(config.autoP.users).join(', '));
+            } else if (args[0] === 'quit') {
+                config.autoP.users.delete(msg.author.username);
+                msg.channel.send('Auto P Dispenser users: ' + Array.from(config.autoP.users).join(', '));
             }
         } else if (args[0] === 'add' || args[0] === 'delete') {
             args.slice(1).forEach(name => config.autoP.users[args[0]](name));
