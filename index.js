@@ -1,12 +1,11 @@
 const Big = require('big.js');
 const Discord = require('discord.js');
-const config = require('./config.json');
+const config = require('./config.js');
 
 const client = new Discord.Client();
 
 const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
 const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];
-config.autoP.users = new Set(config.autoP.users);
 
 const sanitizeMap = new Map([['[', 'p'], [']', 'P']]);
 
@@ -46,8 +45,7 @@ client.on('message', (msg) => {
     } else if (command === 'pong') {
         msg.reply('ping');
     } else if (command === 'debtsey') {
-        const debtStart = new Date(config.debtStart);
-        const debtDays = Math.floor((Date.now() - debtStart.getTime()) / (1000 * 60 * 60 * 24));
+        const debtDays = Math.floor((Date.now() - config.debtStart.getTime()) / (1000 * 60 * 60 * 24));
         const debt = new Big(2).pow(debtDays);
         msg.reply(`Djessey's debt is currently ${debtDays} days old, for a total accumulated debt of ${debt.toExponential(2)} sausage rolls`);
     } else if (command === 'autop') {
