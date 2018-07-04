@@ -76,4 +76,8 @@ client.on('message', (msg) => {
     console.log('Handled message:', msg.content);
 });
 
+client.on('error', (e) => {
+    console.error(e);
+});
+
 client.login(config.token);
