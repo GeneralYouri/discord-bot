@@ -77,6 +77,7 @@ client.on('message', (msg) => {
 });
 
 client.on('error', (e) => {
+    console.error('An unexpected error occurred on', (new Date()).toString());
     console.error(e);
 });
 
