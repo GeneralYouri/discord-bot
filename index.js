@@ -32,6 +32,12 @@ client.on('message', (msg) => {
         msg.channel.send(`${msg.author} said: ${sanitized}`);
     }
 
+    if (config.jetlagMode && msg.author.username === 'MHBudak') {
+        setTimeout(() => {
+            msg.channel.send(`${msg.author} said 7hrs ago: ${sanitized}`);
+        }, 7 * 60 * 60 * 1000);
+    }
+
     if (!msg.content.startsWith(config.prefix)) {
         return;
     }
@@ -48,6 +54,16 @@ client.on('message', (msg) => {
         const debtDays = Math.floor((Date.now() - config.debtStart.getTime()) / (1000 * 60 * 60 * 24));
         const debt = new Big(2).pow(debtDays);
         msg.reply(`Djessey's debt is currently ${debtDays} days old, for a total accumulated debt of ${debt.toExponential(2)} sausage rolls`);
+    } else if (command === 'jetlag') {
+        if (args.length === 0) {
+            msg.channel.send('Jetlag Mode is currently ' + (config.jetlagMode ? 'enabled' : 'disabled'));
+        } else if (truthies.includes(args[0])) {
+            config.jetlagMode = true;
+            msg.channel.send('Enabled Jetlag Mode');
+        } else if (falsies.includes(args[0])) {
+            config.jetlagMode = false;
+            msg.channel.send('Disabled Jetlag Mode');
+        }
     } else if (command === 'autop') {
         if (args.length === 0 || (args.length === 1 && args[0] === 'list')) {
             msg.channel.send('Auto P Dispenser users: ' + Array.from(config.autoP.users).join(', '));
@@ -77,7 +93,7 @@ client.on('message', (msg) => {
 });
 
 client.on('error', (e) => {
-    console.error('An unexpected error occurred on', (new Date()).toString());
+    console.error('An unexpected error occurred, ', (new Date()).toString());
     console.error(e);
 });
 

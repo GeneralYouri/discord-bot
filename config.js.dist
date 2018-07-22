@@ -6,4 +6,5 @@ module.exports = {
         users: new Set(['User1', 'User2']),
     },
     debtStart: new Date('1970-01-01T00:00:00.000Z'),
+    jetlagMode: true,
 };
