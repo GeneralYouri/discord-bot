@@ -27,14 +27,18 @@ client.on('message', (msg) => {
         return;
     }
 
+    // Handle AutoP messages
     const sanitized = sanitize(msg.content);
     if (config.autoP.enabled && config.autoP.users.has(msg.author.username) && msg.content !== sanitized) {
         msg.channel.send(`${msg.author} said: ${sanitized}`);
     }
 
+    // Handle Jetlag Mode messages
     if (config.jetlagMode && msg.author.username === 'MHBudak') {
         setTimeout(() => {
-            msg.channel.send(`${msg.author} said 7hrs ago: ${sanitized}`);
+            if (config.jetlagMode) {
+                msg.channel.send(`${msg.author} said 7hrs ago: ${sanitized}`);
+            }
         }, 7 * 60 * 60 * 1000);
     }
 
