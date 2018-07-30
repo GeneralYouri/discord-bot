@@ -96,9 +96,8 @@ client.on('message', (msg) => {
     console.log('Handled message:', msg.content);
 });
 
-client.on('error', (e) => {
-    console.error('An unexpected error occurred, ', (new Date()).toString());
-    console.error(e);
-});
+client.on('error', e => console.error('Received an unexpected error', (new Date()).toString(), e));
+client.on('warn', e => console.warn('Received an unexpected warning', (new Date()).toString(), e));
+client.on('debug', e => console.info('Received unexpected debug info', (new Date()).toString(), e));
 
 client.login(config.token);
