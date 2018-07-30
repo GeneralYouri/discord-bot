@@ -1,8 +1,21 @@
+const fs = require('fs');
 const Big = require('big.js');
 const Discord = require('discord.js');
 const config = require('./config.js');
 
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+
+    // set a new item in the Collection
+    // with the key as the command name and the value as the exported module
+    client.commands.set(command.name, command);
+}
+
 
 const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
 const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];
@@ -17,6 +30,7 @@ const sanitize = function sanitize(msg) {
     });
     return sanitized;
 };
+
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -50,15 +64,16 @@ client.on('message', (msg) => {
     const args = noPrefix.split(/\s+/g);
     const command = args.shift().toLowerCase();
 
-    if (command === 'ping') {
-        msg.reply('pong');
-    } else if (command === 'pong') {
-        msg.reply('ping');
-    } else if (command === 'debtsey') {
-        const debtDays = Math.floor((Date.now() - config.debtStart.getTime()) / (1000 * 60 * 60 * 24));
-        const debt = new Big(2).pow(debtDays);
-        msg.reply(`Djessey's debt is currently ${debtDays} days old, for a total accumulated debt of ${debt.toExponential(2)} sausage rolls`);
-    } else if (command === 'jetlag') {
+    // if (!client.commands.has(command)) return;
+
+    try {
+        client.commands.get(command).execute(msg, args);
+    } catch (error) {
+        // console.error(error);
+        // msg.reply('There was an error trying to execute that command!');
+    }
+
+    if (command === 'jetlag') {
         if (args.length === 0) {
             msg.channel.send('Jetlag Mode is currently ' + (config.jetlagMode ? 'enabled' : 'disabled'));
         } else if (truthies.includes(args[0])) {
@@ -98,6 +113,6 @@ client.on('message', (msg) => {
 
 client.on('error', e => console.error('Received an unexpected error', (new Date()).toString(), e));
 client.on('warn', e => console.warn('Received an unexpected warning', (new Date()).toString(), e));
-client.on('debug', e => console.info('Received unexpected debug info', (new Date()).toString(), e));
+client.on('debug', e => console.info(e));
 
 client.login(config.token);
