@@ -1,7 +1,6 @@
 const fs = require('fs');
-const Big = require('big.js');
 const Discord = require('discord.js');
-const config = require('./config.js');
+const Config = require('./config-handler.js');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -43,69 +42,33 @@ client.on('message', (msg) => {
 
     // Handle AutoP messages
     const sanitized = sanitize(msg.content);
-    if (config.autoP.enabled && config.autoP.users.has(msg.author.username) && msg.content !== sanitized) {
+    if (Config.get.autoP && Config.get.autoPusers.includes(msg.author.username) && msg.content !== sanitized) {
         msg.channel.send(`${msg.author} said: ${sanitized}`);
     }
 
     // Handle Jetlag Mode messages
-    if (config.jetlagMode && msg.author.username === 'MHBudak') {
+    if (Config.get.jetlagMode && msg.author.username === 'MHBudak') {
         setTimeout(() => {
-            if (config.jetlagMode) {
+            if (Config.get.jetlagMode) {
                 msg.channel.send(`${msg.author} said 7hrs ago: ${sanitized}`);
             }
         }, 7 * 60 * 60 * 1000);
     }
 
-    if (!msg.content.startsWith(config.prefix)) {
+    if (!msg.content.startsWith(Config.get.prefix)) {
         return;
     }
 
-    const noPrefix = sanitized.slice(config.prefix.length);
-    const args = noPrefix.split(/\s+/g);
+    const args = sanitized.slice(Config.get.prefix.length).split(/\s+/g);
     const command = args.shift().toLowerCase();
 
-    // if (!client.commands.has(command)) return;
+    if (!client.commands.has(command)) return;
 
     try {
         client.commands.get(command).execute(msg, args);
-    } catch (error) {
-        // console.error(error);
-        // msg.reply('There was an error trying to execute that command!');
-    }
-
-    if (command === 'jetlag') {
-        if (args.length === 0) {
-            msg.channel.send('Jetlag Mode is currently ' + (config.jetlagMode ? 'enabled' : 'disabled'));
-        } else if (truthies.includes(args[0])) {
-            config.jetlagMode = true;
-            msg.channel.send('Enabled Jetlag Mode');
-        } else if (falsies.includes(args[0])) {
-            config.jetlagMode = false;
-            msg.channel.send('Disabled Jetlag Mode');
-        }
-    } else if (command === 'autop') {
-        if (args.length === 0 || (args.length === 1 && args[0] === 'list')) {
-            msg.channel.send('Auto P Dispenser users: ' + Array.from(config.autoP.users).join(', '));
-        } else if (args.length === 1) {
-            if (truthies.includes(args[0])) {
-                config.autoP.enabled = true;
-                msg.channel.send('Enabled Auto P Dispenser');
-            } else if (falsies.includes(args[0])) {
-                config.autoP.enabled = false;
-                msg.channel.send('Disabled Auto P Dispenser');
-            } else if (args[0] === 'join') {
-                config.autoP.users.add(msg.author.username);
-                msg.channel.send('Auto P Dispenser users: ' + Array.from(config.autoP.users).join(', '));
-            } else if (args[0] === 'quit') {
-                config.autoP.users.delete(msg.author.username);
-                msg.channel.send('Auto P Dispenser users: ' + Array.from(config.autoP.users).join(', '));
-            }
-        } else if (args[0] === 'add' || args[0] === 'delete') {
-            args.slice(1).forEach(name => config.autoP.users[args[0]](name));
-            msg.channel.send('Auto P Dispenser users: ' + Array.from(config.autoP.users).join(', '));
-        }
-    } else if (noPrefix === 'pP') {
-        msg.reply('pP');
+    } catch (e) {
+        console.error(e);
+        msg.reply('There was an error trying to execute that command!');
     }
 
     console.log('Handled message:', msg.content);
@@ -115,4 +78,4 @@ client.on('error', e => console.error('Received an unexpected error', (new Date(
 client.on('warn', e => console.warn('Received an unexpected warning', (new Date()).toString(), e));
 client.on('debug', e => console.info(e));
 
-client.login(config.token);
+client.login(Config.get.token);
