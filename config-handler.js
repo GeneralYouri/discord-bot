@@ -1,10 +1,10 @@
 const fs = require('fs');
-const defaultConfig = require('./config.default.js');
 
-// Apply custom parsing rules
+// Read from config from files and apply custom parsing rules
 const loadConfig = function loadConfig() {
     try {
-        const environmentJson = fs.readFileSync(require.resolve('./config.json'), 'utf-8');
+        const defaultConfig = require('./config.default.json');
+        const environmentJson = require('./config.json');
         const environmentConfig = JSON.parse(environmentJson);
         const config = Object.assign({}, defaultConfig, environmentConfig);
 
@@ -18,31 +18,20 @@ const loadConfig = function loadConfig() {
     }
 };
 
-// Strip custom parsing rules
-const storeConfig = function storeConfig(config) {
-    config.autoPusers = Array.from(new Set(config.autoPusers));
+const Config = loadConfig();
 
-    const environmentJson = JSON.stringify(config, null, 4);
+// Strip custom parsing rules and write to config.json
+const storeConfig = function storeConfig() {
+    const newConfig = Config;
+    newConfig.autoPusers = Array.from(new Set(newConfig.autoPusers));
+
+    const environmentJson = JSON.stringify(newConfig, null, 4);
     try {
         fs.writeFileSync(require.resolve('./config.json'), environmentJson, 'utf-8');
     } catch (e) {
-        console.error('Could not read from config files', e);
+        console.error('Could not write to config file', e);
         throw e;
     }
 };
 
-const Config = (function Config() {
-    const config = loadConfig();
-
-    const set = function set(changes = {}) {
-        Object.assign(config, changes);
-        storeConfig(config);
-    };
-
-    return {
-        get: config,
-        set,
-    };
-}());
-
-module.exports = Config;
+module.exports = { Config, loadConfig, storeConfig };

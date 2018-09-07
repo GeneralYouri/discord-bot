@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const Config = require('./config-handler.js');
+const { Config } = require('./config-handler.js');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -15,9 +15,6 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
 }
 
-
-const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
-const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];
 
 const sanitizeMap = new Map([['[', 'p'], [']', 'P']]);
 
@@ -42,24 +39,24 @@ client.on('message', (msg) => {
 
     // Handle AutoP messages
     const sanitized = sanitize(msg.content);
-    if (Config.get.autoP && Config.get.autoPusers.includes(msg.author.username) && msg.content !== sanitized) {
+    if (Config.autoP && Config.autoPusers.includes(msg.author.username) && msg.content !== sanitized) {
         msg.channel.send(`${msg.author} said: ${sanitized}`);
     }
 
     // Handle Jetlag Mode messages
-    if (Config.get.jetlagMode && msg.author.username === 'MHBudak') {
+    if (Config.jetlagMode && msg.author.username === 'MHBudak') {
         setTimeout(() => {
-            if (Config.get.jetlagMode) {
+            if (Config.jetlagMode) {
                 msg.channel.send(`${msg.author} said 7hrs ago: ${sanitized}`);
             }
         }, 7 * 60 * 60 * 1000);
     }
 
-    if (!msg.content.startsWith(Config.get.prefix)) {
+    if (!msg.content.startsWith(Config.prefix)) {
         return;
     }
 
-    const args = sanitized.slice(Config.get.prefix.length).split(/\s+/g);
+    const args = sanitized.slice(Config.prefix.length).split(/\s+/g);
     const command = args.shift().toLowerCase();
 
     if (!client.commands.has(command)) return;
@@ -78,4 +75,4 @@ client.on('error', e => console.error('Received an unexpected error', (new Date(
 client.on('warn', e => console.warn('Received an unexpected warning', (new Date()).toString(), e));
 client.on('debug', e => console.info(e));
 
-client.login(Config.get.token);
+client.login(Config.token);

@@ -1,5 +1,5 @@
 # Custom
-config.default.js
+config.default.json
 config.json
 
 
@@ -119,4 +119,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-/config.default.js
+/config.default.json
