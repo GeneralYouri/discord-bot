@@ -4,8 +4,7 @@ const fs = require('fs');
 const loadConfig = function loadConfig() {
     try {
         const defaultConfig = require('./config.default.json');
-        const environmentJson = require('./config.json');
-        const environmentConfig = JSON.parse(environmentJson);
+        const environmentConfig = require('./config.json');
         const config = Object.assign({}, defaultConfig, environmentConfig);
 
         config.autoPusers = Array.from(new Set(config.autoPusers));

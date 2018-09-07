@@ -5,7 +5,7 @@ const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'
 
 const execute = function execute(msg, args) {
     if (args.length === 0) {
-        msg.channel.send('Jetlag Mode is currently ' + (Config.get.jetlagMode ? 'enabled' : 'disabled'));
+        msg.channel.send('Jetlag Mode is currently ' + (Config.jetlagMode ? 'enabled' : 'disabled'));
     } else if (truthies.includes(args[0])) {
         Config.jetlagMode = true;
         storeConfig();
