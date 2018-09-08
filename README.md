@@ -3,11 +3,18 @@ A chat bot for Discord.
 
 ---
 
-Requires NodeJS v10.4.0 or higher
+## Installation
 
-Run via
-```bash
+Clone the GitHub repo and create a config file.
+
+## Usage
+
+```sh
 node .
 ```
+
+## License
+
+MIT © Youri Bok
 
 ---
