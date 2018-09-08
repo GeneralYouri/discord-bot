@@ -1,5 +1,5 @@
 const Big = require('big.js');
-const { Config } = require('./../config-handler.js');
+const { Config } = require('./../config-handler');
 
 const execute = function execute(msg, args) {
     const debtDays = Math.floor((Date.now() - Config.debtStart.getTime()) / (1000 * 60 * 60 * 24));
