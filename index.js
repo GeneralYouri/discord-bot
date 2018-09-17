@@ -68,19 +68,65 @@ client.on('message', (message) => {
         return;
     }
 
+
+
+    // Parse command arguments
     const args = sanitized.slice(Config.prefix.length).split(/\s+/g);
-    const command = args.shift().toLowerCase();
+    const commandName = args.shift().toLowerCase();
 
-    if (!client.commands.has(command)) return;
-
-    try {
-        client.commands.get(command).execute(message, args);
-    } catch (e) {
-        console.error(e);
-        message.reply('There was an error trying to execute that command!');
+    // Fetch the command
+    const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.alias && cmd.alias.includes(commandName));
+    if (!command) {
+        return message.reply(`I don't know what to do with you. Try \`${Config.prefix}help\` to see what I can do.`);
     }
 
-    console.log('Handled message:', message.content);
+    // Handle command option 'guildOnly'
+    if (command.guildOnly && message.channel.type !== 'text') {
+        return message.reply('I can only do this inside servers.');
+    }
+
+    // Handle command option 'dmOnly'
+    if (command.dmOnly && message.channel.type !== 'dm') {
+        return message.reply('I can only do this inside DMs.');
+    }
+
+    // Handle command option 'args'
+    if (command.args && !args.length) {
+        const reply = [`you need to give me some more details on this one.`];
+
+        if (command.usage && !command.hidden) {
+            reply.push(`**Usage:** \`${Config.prefix}${command.name} ${command.usage}\``);
+        }
+
+        return message.reply(reply.join('\n'));
+    }
+
+    // Handle command option 'cooldown'
+    const now = Date.now();
+    const timestamps = client.cooldowns.get(command.name);
+    const cooldownMs = (command.cooldown || Config.defaultCommandCooldown) * 1000;
+
+    if (timestamps.has(message.author.id)) {
+        const expirationTime = timestamps.get(message.author.id) + cooldownMs;
+
+        if (now < expirationTime) {
+            const timeLeft = (expirationTime - now) / 1000;
+            return message.reply(`I'm not allowed to spam, try using the \`${command.name}\` command again in ${timeLeft.toFixed(1)} more second(s).`);
+        }
+    }
+
+    timestamps.set(message.author.id, now);
+    setTimeout(() => timestamps.delete(message.author.id), cooldownMs);
+
+    // Execute the command
+    try {
+        command.execute(message, commandName, ...args);
+    } catch (error) {
+        console.error(error);
+        message.reply('I tried, but couldn\'t execute that command for you!');
+    }
+
+    console.log(`Handled command (${commandName}): "${message.content}"`);
 });
 
 client.on('error', e => console.error('Received an unexpected error', (new Date()).toString(), e));
