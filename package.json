@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "main": "node index.js",
+        "dev": "cross-env NODE_ENV=development node index.js",
         "eslint": "eslint src",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

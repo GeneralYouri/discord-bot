@@ -4,20 +4,25 @@ const { Config } = require('./config-handler');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
+client.cooldowns = new Discord.Collection();
 
+// Load and register commands
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
 
-    // set a new item in the Collection
-    // with the key as the command name and the value as the exported module
-    client.commands.set(command.name, command);
+    if (!Config.blacklistCommands.includes(command.name)) {
+        client.commands.set(command.name, command);
+        client.cooldowns.set(command.name, new Discord.Collection());
+        if (Config.hiddenCommands.includes(command.name)) {
+            command.hidden = true;
+        }
+    }
 }
 
 
+// Helpers for the sanitize feature
 const sanitizeMap = new Map([['[', 'p'], [']', 'P']]);
-
 const sanitize = function sanitize(msg) {
     let sanitized = msg;
     sanitizeMap.forEach((to, from) => {
@@ -32,27 +37,34 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('message', (msg) => {
-    if (msg.author.bot) {
+client.on('message', (message) => {
+    // Only work in a specific test server in development mode
+    if (process.env.NODE_ENV === 'development' && (!message.guild || message.guild.id !== Config.devModeGuildID)) {
+        return;
+    }
+
+    // Ignore messages from bots (including ourselves)
+    if (message.author.bot) {
         return;
     }
 
     // Handle AutoP messages
-    const sanitized = sanitize(msg.content);
-    if (Config.autoP && Config.autoPusers.includes(msg.author.username) && msg.content !== sanitized) {
-        msg.channel.send(`${msg.author} said: ${sanitized}`);
+    const sanitized = sanitize(message.content);
+    if (Config.autoP && Config.autoPusers.includes(message.author.username) && message.content !== sanitized) {
+        message.channel.send(`${message.author} said: ${sanitized}`);
     }
 
     // Handle Jetlag Mode messages
-    if (Config.jetlagMode && msg.author.username === 'MHBudak') {
+    if (Config.jetlagMode && message.author.username === 'MHBudak') {
         setTimeout(() => {
             if (Config.jetlagMode) {
-                msg.channel.send(`${msg.author} said 7hrs ago: ${sanitized}`);
+                message.channel.send(`${message.author} said 7hrs ago: ${sanitized}`);
             }
         }, 7 * 60 * 60 * 1000);
     }
 
-    if (!msg.content.startsWith(Config.prefix)) {
+    // Ignore messages not starting with the command prefix
+    if (!message.content.startsWith(Config.prefix)) {
         return;
     }
 
@@ -62,17 +74,19 @@ client.on('message', (msg) => {
     if (!client.commands.has(command)) return;
 
     try {
-        client.commands.get(command).execute(msg, args);
+        client.commands.get(command).execute(message, args);
     } catch (e) {
         console.error(e);
-        msg.reply('There was an error trying to execute that command!');
+        message.reply('There was an error trying to execute that command!');
     }
 
-    console.log('Handled message:', msg.content);
+    console.log('Handled message:', message.content);
 });
 
 client.on('error', e => console.error('Received an unexpected error', (new Date()).toString(), e));
 client.on('warn', e => console.warn('Received an unexpected warning', (new Date()).toString(), e));
-client.on('debug', e => console.info(e));
+if (process.env.NODE_ENV === 'development') {
+    client.on('debug', error => console.info(error));
+}
 
 client.login(Config.token);
