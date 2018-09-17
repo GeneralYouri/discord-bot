@@ -9,4 +9,5 @@
     "autoPusers": [],
     debtStart: new Date('1970-01-01T00:00:00.000Z'),
     jetlagMode: true,
+    "bodyParts": ["face", "head", "arm", "stomach", "knee", "elbow", "thigh", "neck"]
 }
