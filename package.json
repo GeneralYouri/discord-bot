@@ -33,6 +33,7 @@
     },
     "dependencies": {
         "big.js": "^5.1.2",
-        "discord.js": "^11.3.2"
+        "discord.js": "^11.3.2",
+        "node-fetch": "^2.2.0"
     }
 }
