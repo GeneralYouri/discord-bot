@@ -26,6 +26,7 @@
     },
     "homepage": "https://github.com/GeneralYouri/discord-bot#readme",
     "devDependencies": {
+        "cross-env": "^5.2.0",
         "eslint": "^4.19.1",
         "eslint-config-airbnb": "^16.1.0",
         "eslint-plugin-import": "^2.12.0"
