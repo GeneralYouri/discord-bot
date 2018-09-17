@@ -3,33 +3,29 @@ const { Config, storeConfig } = require('./../config-handler');
 const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
 const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];
 
-const execute = function execute(msg, args) {
+const execute = function execute(msg, type, ...names) {
     const userSet = new Set(Config.autoPusers);
 
-    if (args.length === 0 || (args.length === 1 && args[0] === 'list')) {
+    if (!type || type === 'list') {
         msg.channel.send('Auto P Dispenser users: ' + Config.autoPusers.join(', '));
-    } else if (args.length === 1) {
-        if (truthies.includes(args[0])) {
-            Config.autoP = true;
-            storeConfig();
-            msg.channel.send('Enabled Auto P Dispenser');
-        } else if (falsies.includes(args[0])) {
-            Config.autoP = false;
-            storeConfig();
-            msg.channel.send('Disabled Auto P Dispenser');
-        } else if (args[0] === 'join') {
-            userSet.add(msg.author.username);
-            Config.autoPusers = Array.from(userSet);
-            storeConfig();
-            msg.channel.send('Auto P Dispenser users: ' + Config.autoPusers.join(', '));
-        } else if (args[0] === 'quit') {
-            userSet.delete(msg.author.username);
-            Config.autoPusers = Array.from(userSet);
-            storeConfig();
-            msg.channel.send('Auto P Dispenser users: ' + Config.autoPusers.join(', '));
-        }
-    } else if (args[0] === 'add' || args[0] === 'delete') {
-        const [type, ...names] = args;
+    } else if (truthies.includes(type)) {
+        Config.autoP = true;
+        storeConfig();
+        msg.channel.send('Enabled Auto P Dispenser');
+    } else if (falsies.includes(type)) {
+        Config.autoP = false;
+        storeConfig();
+        msg.channel.send('Disabled Auto P Dispenser');
+    } else if (type === 'join') {
+        userSet.add(msg.author.username);
+        Config.autoPusers = Array.from(userSet);
+        msg.channel.send('Auto P Dispenser users: ' + Config.autoPusers.join(', '));
+    } else if (type === 'quit') {
+        userSet.delete(msg.author.username);
+        Config.autoPusers = Array.from(userSet);
+        storeConfig();
+        msg.channel.send('Auto P Dispenser users: ' + Config.autoPusers.join(', '));
+    } else if (type === 'add' || type === 'delete') {
         names.forEach(name => userSet[type](name));
         Config.autoPusers = Array.from(userSet);
         storeConfig();
