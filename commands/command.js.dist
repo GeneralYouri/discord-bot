@@ -1,0 +1,33 @@
+const { Config } = require('./../config-handler.js');
+
+const execute = function execute(message, commandName, ...args) {
+    // Make the command do something
+};
+
+module.exports = {
+    // Command name
+    name: 'role',
+
+    // Command also triggers on these command names
+    // alias: ['addRole', 'giveRole'],
+
+    // Command description
+    // description: 'Assign a role to a user',
+
+    // Command requires arguments
+    // args: true,
+
+    // Command usage instructions
+    // usage: '<user> <role>',
+
+    // Command will work in servers only, not in DMs
+    // guildOnly: true,
+
+    // Command will work in DMs only, not in servers
+    // dmOnly: true,
+
+    // After using this command, it can only be used again after 5 seconds
+    // cooldown: 15,
+
+    execute,
+};

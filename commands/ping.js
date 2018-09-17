@@ -9,6 +9,5 @@ module.exports = {
     name: 'ping',
     description: 'Ping!',
     usage: '',
-    cooldown: 10,
     execute,
 };

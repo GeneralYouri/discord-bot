@@ -9,6 +9,5 @@ module.exports = {
     name: 'pong',
     description: 'Pong!',
     usage: '',
-    cooldown: 10,
     execute,
 };
