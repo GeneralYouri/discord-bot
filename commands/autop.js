@@ -3,7 +3,7 @@ const { Config, storeConfig } = require('./../config-handler');
 const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
 const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];
 
-const execute = function execute(msg, type = undefined, ...names) {
+const execute = function execute(msg, commandName, type = undefined, ...names) {
     const userSet = new Set(Config.autoPusers);
 
     if (!type || type === 'list') {

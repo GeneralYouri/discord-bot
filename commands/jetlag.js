@@ -3,7 +3,7 @@ const { Config, storeConfig } = require('./../config-handler');
 const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
 const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];
 
-const execute = function execute(msg, type = undefined) {
+const execute = function execute(msg, commandName, type = undefined) {
     if (!type || type === 'list') {
         msg.channel.send('Jetlag Mode is currently ' + (Config.jetlagMode ? 'enabled' : 'disabled'));
     } else if (truthies.includes(type)) {
