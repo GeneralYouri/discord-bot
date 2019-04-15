@@ -31,17 +31,14 @@ node .
 
 - Session handling via PM2
 - Persistent storage like MongoDB
-- Extract command option handling into separate files, such as the options guildOnly, dmOnly, args, and cooldown
+- Extract command option handling into separate files, such as the options permissions, guildOnly, dmOnly, argumentss, and cooldown
 - Improve handling of omitted Config options
 - Config option to ignore specific commands (not even reply with 'cannot do anything')
 - Config options to enable/disable (whitelist vs blacklist) the entire bot in certain channels
-- Role/Member permissions system
 - New member welcome message
-- Command `broadcast` to send server-wide DMs
 - Command `role` to set a member's role
 - Command `kick` to kick a member from the server
 - Command `quote` to get/set chat quotes
-- Command `time` to get the current time in a specific timezone (can be both serious and joke)
 - Command `upload` to upload gallery images
 - Command `ratejoke` (Name not finalized) to rate the most recent joke sent by the bot
 - Command `topspammer` (Name not finalized) to identify who's been spamming the most messages recently
