@@ -11,13 +11,13 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 for (const file of commandFiles) {
     /* eslint-disable-next-line global-require, import/no-dynamic-require */
     const command = require(`./commands/${file}`);
-    if (command.disabled || Config.blacklistCommands.includes(command.name)) {
+    if (command.disabled || (Array.isArray(Config.blacklistCommands) && Config.blacklistCommands.includes(command.name))) {
         continue;
     }
 
     client.commands.set(command.name, command);
     client.cooldowns.set(command.name, new Discord.Collection());
-    if (Config.hiddenCommands.includes(command.name)) {
+    if (Array.isArray(Config.hiddenCommands) && Config.hiddenCommands.includes(command.name)) {
         command.hidden = true;
     }
 }
@@ -52,7 +52,7 @@ client.on('message', (message) => {
 
     // Handle AutoP messages
     const sanitized = sanitize(message.content);
-    if (Config.autoP && Config.autoPusers.includes(message.author.username) && message.content !== sanitized) {
+    if (Config.autoP && Array.isArray(Config.autoPusers) && Config.autoPusers.includes(message.author.username) && message.content !== sanitized) {
         message.channel.send(`${message.author} said: ${sanitized}`);
     }
 
@@ -89,13 +89,13 @@ client.on('message', (message) => {
     }
 
     // Handle command option 'guildOnly'
-    if (command.guildOnly && message.channel.type !== 'text') {
+    if (command.guildOnly && !['text', 'voice', 'category'].includes(message.channel.type)) {
         message.reply('I can only do this inside servers.');
         return;
     }
 
     // Handle command option 'dmOnly'
-    if (command.dmOnly && message.channel.type !== 'dm') {
+    if (command.dmOnly && !['dm', 'group'].includes(message.channel.type)) {
         message.reply('I can only do this inside DMs.');
         return;
     }
@@ -115,7 +115,7 @@ client.on('message', (message) => {
     // Handle command option 'cooldown'
     const now = Date.now();
     const timestamps = client.cooldowns.get(command.name);
-    const cooldownMs = (command.cooldown || Config.defaultCommandCooldown) * 1000;
+    const cooldownMs = (command.cooldown || Config.defaultCommandCooldown || 0) * 1000;
 
     if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownMs;

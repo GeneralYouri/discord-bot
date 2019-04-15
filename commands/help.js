@@ -39,7 +39,9 @@ const execute = async function execute(message, commandName, name) {
         if (command.usage) {
             data.push(`**Usage:** \`${Config.prefix}${command.name} ${command.usage}\``);
         }
-        data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
+        if (command.cooldown) {
+            data.push(`**Cooldown:** ${command.cooldown || 3} second${(command.cooldown === 1) ? '' : 's'}`);
+        }
 
         message.channel.send(data.join('\n'), { split: true });
     }

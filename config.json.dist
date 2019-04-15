@@ -1,6 +1,6 @@
 {
-    "prefix": "",
     "token": "token-here",
+    "prefix": "",
     "devModeGuildID": "",
     "blacklistCommands": [],
     "hiddenCommands": [],
@@ -9,5 +9,6 @@
     "autoPusers": [],
     "debtStart": 0,
     "jetlagMode": true,
+    "adultMode": false,
     "bodyParts": ["face", "head", "arm", "stomach", "knee", "elbow", "thigh", "neck"]
 }
