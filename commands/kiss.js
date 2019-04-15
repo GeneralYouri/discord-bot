@@ -5,7 +5,7 @@ const execute = function execute(message) {
 
     const userMentions = message.mentions.users;
     const target = (userMentions.size && userMentions.first() !== message.author) ? userMentions.first() : 'themselves';
-    str += ` kissed ${target}`;
+    str += ` kisses ${target}`;
 
     if (Array.isArray(Config.bodyParts) && Config.bodyParts.length > 1) {
         const bodyPart = Config.bodyParts[Math.floor(Math.random() * Config.bodyParts.length)];

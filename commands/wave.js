@@ -1,7 +1,11 @@
 const execute = function execute(message) {
+    let str = message.author;
+
     const userMentions = message.mentions.users;
     const target = (userMentions.size && userMentions.first() !== message.author) ? userMentions.first() : 'themselves';
-    message.channel.send(`${message.author} waved at ${target}`);
+    str += ` waves at ${target}`;
+
+    message.channel.send(str);
 };
 
 module.exports = {
