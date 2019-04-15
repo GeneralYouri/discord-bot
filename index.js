@@ -50,6 +50,11 @@ client.on('message', (message) => {
         return;
     }
 
+    // Ignore messages from blacklisted users
+    if (Config.blacklistUsers.includes(message.author.username)) {
+        return;
+    }
+
     // Handle AutoP messages
     const sanitized = sanitize(message.content);
     if (Config.autoP && Array.isArray(Config.autoPusers) && Config.autoPusers.includes(message.author.username) && message.content !== sanitized) {

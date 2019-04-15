@@ -18,6 +18,7 @@ node .
 - **`blacklistCommands`** The command names (not aliases) to disable (will also disable all aliases). A disabled command is treated as non-existant and can't be used.
 - **`hiddenCommands`** The command names (not aliases) to hide (will also hide all aliases). A hidden command can be used normally, but will not show up in the `help` command.
 - **`defaultCommandCooldown`** The default cooldown for commands that don't have their own custom cooldown. Cooldowns are per-command, AND per-user.
+- **`blacklistUsers`** User names who are not allowed to interact with the bot.
 - **`autoP`** Toggles a special feature that automatically sanitizes messages from specific users by replacing specific characters.
 - **`autoPusers`** Configures the users for whom the above autoP feature would work, if enabled.
 - **`debtStart`** The (approximate) time when Djessey's debt interest started counting.

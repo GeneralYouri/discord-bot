@@ -5,6 +5,7 @@
     "blacklistCommands": [],
     "hiddenCommands": [],
     "defaultCommandCooldown": 3,
+    "blacklistUsers": [],
     "autoP": true,
     "autoPusers": [],
     "debtStart": 0,
