@@ -22,7 +22,7 @@ for (const file of commandFiles) {
 
 
 // Helpers for the sanitize feature
-const sanitizeMap = new Map([['[', 'p'], [']', 'P']]);
+const sanitizeMap = new Map([['[', 'p'], [']', 'P'], ['\\', '\''], ['|', '"']]);
 const sanitize = function sanitize(msg) {
     let sanitized = msg;
     sanitizeMap.forEach((to, from) => {
@@ -67,7 +67,6 @@ client.on('message', (message) => {
     if (!message.content.startsWith(Config.prefix)) {
         return;
     }
-
 
 
     // Parse command arguments
