@@ -23,7 +23,7 @@ const execute = function execute(message, commandName, ...args) {
 module.exports = {
     name: 'ask',
     description: 'I will answer all of your questions.. if I know the answer!',
-    args: true,
+    arguments: 1,
     usage: '<what is your question?>',
     execute,
 };
