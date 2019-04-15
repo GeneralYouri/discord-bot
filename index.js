@@ -9,14 +9,16 @@ client.cooldowns = new Discord.Collection();
 // Load and register commands
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
+    /* eslint-disable-next-line global-require, import/no-dynamic-require */
     const command = require(`./commands/${file}`);
+    if (command.disabled || Config.blacklistCommands.includes(command.name)) {
+        continue;
+    }
 
-    if (!Config.blacklistCommands.includes(command.name)) {
-        client.commands.set(command.name, command);
-        client.cooldowns.set(command.name, new Discord.Collection());
-        if (Config.hiddenCommands.includes(command.name)) {
-            command.hidden = true;
-        }
+    client.commands.set(command.name, command);
+    client.cooldowns.set(command.name, new Discord.Collection());
+    if (Config.hiddenCommands.includes(command.name)) {
+        command.hidden = true;
     }
 }
 
@@ -76,28 +78,38 @@ client.on('message', (message) => {
     // Fetch the command
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.alias && cmd.alias.includes(commandName));
     if (!command) {
-        return message.reply(`I don't know what to do with you. Try \`${Config.prefix}help\` to see what I can do.`);
+        message.reply(`I don't know what to do with you. Try \`${Config.prefix}help\` to see what I can do.`);
+        return;
+    }
+
+    // Handle command option 'permissions'
+    if (command.permissions && !message.member.hasPermission(command.permission)) {
+        message.reply('You\'re not the boss of me! (You\'re not allowed to use this command.)');
+        return;
     }
 
     // Handle command option 'guildOnly'
     if (command.guildOnly && message.channel.type !== 'text') {
-        return message.reply('I can only do this inside servers.');
+        message.reply('I can only do this inside servers.');
+        return;
     }
 
     // Handle command option 'dmOnly'
     if (command.dmOnly && message.channel.type !== 'dm') {
-        return message.reply('I can only do this inside DMs.');
+        message.reply('I can only do this inside DMs.');
+        return;
     }
 
     // Handle command option 'args'
     if (command.args && !args.length) {
-        const reply = [`you need to give me some more details on this one.`];
+        const reply = ['you need to give me some more details on this one.'];
 
         if (command.usage && !command.hidden) {
             reply.push(`**Usage:** \`${Config.prefix}${command.name} ${command.usage}\``);
         }
 
-        return message.reply(reply.join('\n'));
+        message.reply(reply.join('\n'));
+        return;
     }
 
     // Handle command option 'cooldown'
@@ -110,7 +122,8 @@ client.on('message', (message) => {
 
         if (now < expirationTime) {
             const timeLeft = (expirationTime - now) / 1000;
-            return message.reply(`I'm not allowed to spam, try using the \`${command.name}\` command again in ${timeLeft.toFixed(1)} more second(s).`);
+            message.reply(`I'm not allowed to spam, try using the \`${command.name}\` command again in ${timeLeft.toFixed(1)} more second(s).`);
+            return;
         }
     }
 

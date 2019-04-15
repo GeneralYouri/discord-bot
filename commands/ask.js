@@ -11,10 +11,10 @@ const questions = [
 
 const execute = function execute(message, commandName, ...args) {
     const str = args.join(' ').toLowerCase();
-    for (const question of questions) {
-        if (question.regex.test(str)) {
-            return message.reply(question.answer);
-        }
+    const question = questions.find(q => q.regex.test(str));
+    if (!question) {
+        message.reply('How am I supposed to know?!');
+        return;
     }
 
     message.reply('How am I supposed to know?!');

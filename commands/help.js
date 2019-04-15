@@ -25,7 +25,8 @@ const execute = async function execute(message, commandName, name) {
         // List command-specific help
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
         if (!command || command.hidden) {
-            return message.reply('I don\'t know that command, can you teach me?');
+            message.reply('I don\'t know that command, can you teach me?');
+            return;
         }
 
         data.push(`**Command:** ${command.name}`);
