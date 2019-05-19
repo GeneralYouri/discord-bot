@@ -45,6 +45,14 @@ client.on('message', (message) => {
         return;
     }
 
+    if (process.env.NODE_ENV !== 'development' && message.guild && message.guild.id === Config.devModeGuildID) {
+        if (message.content.startsWith('sudo ')) {
+            message.content = message.content.slice(5);
+        } else {
+            return;
+        }
+    }
+
     // Ignore messages from bots (including ourselves)
     if (message.author.bot) {
         return;
