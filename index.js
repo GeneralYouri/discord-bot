@@ -66,7 +66,7 @@ client.on('message', (message) => {
     // Handle AutoP messages
     const sanitized = sanitize(message.content);
     if (Config.autoP && Array.isArray(Config.autoPusers) && Config.autoPusers.includes(message.author.username) && message.content !== sanitized) {
-        message.channel.send(`${message.author} said: ${sanitized}`);
+        message.channel.send(`You said: ${sanitized}`);
     }
 
     // Handle Jetlag Mode messages
@@ -91,7 +91,9 @@ client.on('message', (message) => {
     // Fetch the command
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.alias && cmd.alias.includes(commandName));
     if (!command) {
-        message.reply(`I don't know what to do with you. Try \`${Config.prefix}help\` to see what I can do.`);
+        if (commandName !== '') {
+            message.reply(`I don't know what to do with you. Try \`${Config.prefix}help\` to see what I can do.`);
+        }
         return;
     }
 

@@ -25,7 +25,7 @@ const execute = function execute(message, commandName, timeZone) {
 module.exports = {
     name: 'datetime',
     alias: ['time', 'date'],
-    description: 'Get the current time in the given timezone',
+    description: 'Get the current date/time in the given timezone',
     permissions: 0x0,
     arguments: 1,
     usage: '<timezone>',
