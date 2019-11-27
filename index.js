@@ -64,12 +64,12 @@ client.on('message', (message) => {
     }
 
     // Handle AutoP messages
-    const sanitized = sanitize(message.content);
     if (Config.autoP && Array.isArray(Config.autoPusers) && Config.autoPusers.includes(message.author.username) && message.content !== sanitized) {
-        message.channel.send(`You said: ${sanitized}`);
+        message.channel.send(`You said: ${sanitize(message.cleanContent)}`);
     }
 
     // Handle Jetlag Mode messages
+    const sanitized = sanitize(message.content);
     if (Config.jetlagMode && message.author.username === 'MHBudak') {
         setTimeout(() => {
             if (Config.jetlagMode) {
