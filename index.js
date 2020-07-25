@@ -40,11 +40,12 @@ client.on('ready', () => {
 });
 
 client.on('message', (message) => {
-    // Only work in a specific test server in development mode
+    // In development mode, only work in the test server
     if (process.env.NODE_ENV === 'development' && (!message.guild || message.guild.id !== Config.devModeGuildID)) {
         return;
     }
 
+    // In production mode, require sudo to work in the test server
     if (process.env.NODE_ENV !== 'development' && message.guild && message.guild.id === Config.devModeGuildID) {
         if (message.content.startsWith('sudo ')) {
             message.content = message.content.slice(5);
@@ -59,13 +60,13 @@ client.on('message', (message) => {
     }
 
     // Ignore messages from blacklisted users
-    if (Config.blacklistUsers.includes(message.author.username)) {
+    if (Config.blacklistUsers.includes(message.author.id)) {
         return;
     }
 
     // Handle AutoP messages
     const sanitized = sanitize(message.content);
-    if (Config.autoP && Array.isArray(Config.autoPusers) && Config.autoPusers.includes(message.author.username) && message.content !== sanitized) {
+    if (Config.autoP && Array.isArray(Config.autoPusers) && Config.autoPusers.includes(message.author.id) && message.content !== sanitized) {
         message.channel.send(`You said: ${sanitize(message.cleanContent)}`);
     }
 
