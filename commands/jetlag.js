@@ -11,7 +11,7 @@ const execute = function execute(msg, commandName, type = undefined, name, delay
     } else if (type === 'list') {
         const ids = Array.from(userSet.keys());
         const data = ids.map(id => `${msg.client.users.get(id).username} with a delay of ${userSet.get(id)} hrs`);
-        msg.channel.send('Jetlag Mode users:\n' + data.join('\n'), { split: true });
+        msg.channel.send('Jetlag Mode users:\n' + data.join('\n'));
     } else if (type === 'join') {
         delay = name;
         userSet.set(msg.author.id, delay);
@@ -29,7 +29,7 @@ const execute = function execute(msg, commandName, type = undefined, name, delay
         Config.jetlagUsers = Object.fromEntries(userSet.entries());
         storeConfig();
         msg.channel.send(`Added Jetlag Mode for ${name} with delay ${delay}`);
-    } else if (type === 'delete') {
+    } else if (type === 'remove') {
         const { id } = msg.client.users.find(user => user.username === name);
         userSet.delete(id);
         Config.jetlagUsers = Object.fromEntries(userSet.entries());
@@ -49,7 +49,7 @@ const execute = function execute(msg, commandName, type = undefined, name, delay
 module.exports = {
     name: 'jetlag',
     description: 'Configure Jetlag Mode',
-    usage: '<status|list|join delay|quit|add user delay|delete user|on|off>',
+    usage: '<status|list|join delay|quit|add user delay|remove user|on|off>',
     cooldown: 5,
     execute,
 };
