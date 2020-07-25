@@ -10,7 +10,7 @@
     "autoPusers": ["id1", "id2"],
     "debtStart": 0,
     "jetlagMode": true,
-    "jetlagUsers": ["id1", "id2"],
+    "jetlagUsers": {"id1": "delay hours", "id2": "delay hours"},
     "adultMode": false,
     "bodyParts": ["face", "head", "arm", "stomach", "knee", "elbow", "thigh", "neck"]
 }
