@@ -10,6 +10,7 @@
     "autoPusers": ["id1", "id2"],
     "debtStart": 0,
     "jetlagMode": true,
+    "jetlagUsers": ["id1", "id2"],
     "adultMode": false,
     "bodyParts": ["face", "head", "arm", "stomach", "knee", "elbow", "thigh", "neck"]
 }

@@ -71,12 +71,13 @@ client.on('message', (message) => {
     }
 
     // Handle Jetlag Mode messages
-    if (Config.jetlagMode && message.author.username === 'MHBudak') {
+    if (Config.jetlagMode && Config.jetlagUsers && Config.jetlagUsers[message.author.id]) {
+        const delay = Config.jetlagUsers[message.author.id] % 24;
         setTimeout(() => {
-            if (Config.jetlagMode) {
-                message.channel.send(`${message.author} said 7hrs ago: ${sanitized}`);
+            if (Config.jetlagMode && Config.jetlagUsers && Config.jetlagUsers[message.author.id]) {
+                message.channel.send(`*${message.author.username} said ${delay}hrs ago:*\n${sanitized}`);
             }
-        }, 7 * 60 * 60 * 1000);
+        }, delay * 60 * 60 * 1000);
     }
 
     // Ignore messages not starting with the command prefix
