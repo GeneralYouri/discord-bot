@@ -22,6 +22,7 @@ const execute = function execute(message, commandName, timeZone) {
     message.channel.send(`It's currently ${timeStr}`);
 };
 
+// TODO: Accept more commonly used timezone names like UTC61 or GMT+1
 module.exports = {
     name: 'datetime',
     alias: ['time', 'date'],

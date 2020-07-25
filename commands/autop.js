@@ -2,10 +2,22 @@ const { Config, storeConfig } = require('./../config-handler');
 
 const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
 const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];
+const requiresAdmin = ['add', 'remove', 'on', 'off'];
 
 const userSet = new Set(Config.autoPusers);
 
 const execute = function execute(msg, commandName, type = undefined, name) {
+    if (truthies.includes(type)) {
+        type = 'on';
+    } else if (falsies.includes(type)) {
+        type = 'off';
+    }
+
+    if (requiresAdmin.includes(type) && !Config.adminUsers.includes(msg.author.id)) {
+        msg.reply('You\'re not allowed to use this command');
+        return;
+    }
+
     if (!type || type === 'status') {
         msg.channel.send(`Auto P Dispenser is currently ${Config.autoP ? `enabled for ${userSet.size} users` : 'disabled'}`);
     } else if (type === 'list') {
@@ -34,11 +46,11 @@ const execute = function execute(msg, commandName, type = undefined, name) {
         Config.autoPusers = Array.from(userSet);
         storeConfig();
         msg.channel.send(`Removed Jetlag Mode for ${name}`);
-    } else if (truthies.includes(type)) {
+    } else if (type === 'on') {
         Config.autoP = true;
         storeConfig();
         msg.channel.send('Enabled Auto P Dispenser');
-    } else if (falsies.includes(type)) {
+    } else if (type === 'off') {
         Config.autoP = false;
         storeConfig();
         msg.channel.send('Disabled Auto P Dispenser');
