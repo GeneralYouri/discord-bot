@@ -4,7 +4,7 @@
     "devModeGuildID": "",
     "defaultCommandCooldown": 3,
     "hiddenCommands": [],
-    "blacklistCommands": [],
+    "blacklistCommands": ["reload"],
     "blacklistUsers": ["id1", "id2"],
     "adminUsers": ["id1", "id2"],
     "autoP": true,
