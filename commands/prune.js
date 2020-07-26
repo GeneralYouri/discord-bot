@@ -13,7 +13,7 @@ const execute = function execute(message, commandName, amountStr) {
         return;
     }
 
-    message.channel.bulkDelete(amount + 1);
+    message.channel.bulkDelete(amount + 1, true);
 };
 
 module.exports = {
