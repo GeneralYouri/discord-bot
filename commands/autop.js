@@ -4,7 +4,7 @@ const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
 const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];
 const requiresAdmin = ['add', 'remove', 'on', 'off'];
 
-const userSet = new Set(Config.autoPusers);
+const userSet = new Set(Config.autoPUsers);
 
 const execute = function execute(msg, commandName, type = undefined, name) {
     if (truthies.includes(type)) {
@@ -26,24 +26,24 @@ const execute = function execute(msg, commandName, type = undefined, name) {
         msg.channel.send(`Auto P Dispenser users:\n${data.join(', ')}`);
     } else if (type === 'join') {
         userSet.add(msg.author.id);
-        Config.autoPusers = Array.from(userSet);
+        Config.autoPUsers = Array.from(userSet);
         storeConfig();
         msg.channel.send(`Added Auto P Dispenser for ${msg.author.username}`);
     } else if (type === 'quit') {
         userSet.delete(msg.author.id);
-        Config.autoPusers = Array.from(userSet);
+        Config.autoPUsers = Array.from(userSet);
         storeConfig();
         msg.channel.send(`Removed Auto P Dispenser for ${msg.author.username}`);
     } else if (type === 'add') {
         const { id } = msg.client.users.find(user => user.username === name);
         userSet.add(id);
-        Config.autoPusers = Array.from(userSet);
+        Config.autoPUsers = Array.from(userSet);
         storeConfig();
         msg.channel.send(`Added Jetlag Mode for ${name}`);
     } else if (type === 'remove') {
         const { id } = msg.client.users.find(user => user.username === name);
         userSet.delete(id);
-        Config.autoPusers = Array.from(userSet);
+        Config.autoPUsers = Array.from(userSet);
         storeConfig();
         msg.channel.send(`Removed Jetlag Mode for ${name}`);
     } else if (type === 'on') {

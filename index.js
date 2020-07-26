@@ -66,7 +66,7 @@ client.on('message', (message) => {
 
     // Handle AutoP messages
     const sanitized = sanitize(message.content);
-    if (Config.autoP && Array.isArray(Config.autoPusers) && Config.autoPusers.includes(message.author.id) && message.content !== sanitized) {
+    if (Config.autoP && Array.isArray(Config.autoPUsers) && Config.autoPUsers.includes(message.author.id) && message.content !== sanitized) {
         message.channel.send(`You said: ${sanitize(message.cleanContent)}`);
     }
 
