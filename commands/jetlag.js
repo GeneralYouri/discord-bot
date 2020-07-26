@@ -69,7 +69,7 @@ const execute = function execute(msg, commandName, type = undefined, name, delay
 module.exports = {
     name: 'jetlag',
     description: 'Configure Jetlag Mode',
-    usage: '<status|list|join delay|quit|add user delay|remove user|on|off>',
+    usage: '{status|list|quit|on|off} | join <delay> | add <user> <delay> | remove <user>',
     cooldown: 5,
     execute,
 };

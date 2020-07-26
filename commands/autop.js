@@ -23,7 +23,7 @@ const execute = function execute(msg, commandName, type = undefined, name) {
     } else if (type === 'list') {
         const ids = Array.from(userSet.keys());
         const data = ids.map(id => `${msg.client.users.get(id).username}`);
-        msg.channel.send('Auto P Dispenser users:\n' + data.join(', '));
+        msg.channel.send(`Auto P Dispenser users:\n${data.join(', ')}`);
     } else if (type === 'join') {
         userSet.add(msg.author.id);
         Config.autoPusers = Array.from(userSet);
@@ -60,7 +60,7 @@ const execute = function execute(msg, commandName, type = undefined, name) {
 module.exports = {
     name: 'autop',
     description: 'Configure the Auto P Dispenser',
-    usage: '<list|join|quit|add user|remove user|on|off>',
+    usage: '{list|join|quit|on|off} | {add|remove} <user>',
     cooldown: 5,
     execute,
 };

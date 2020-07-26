@@ -17,7 +17,7 @@ module.exports = {
     // Command is disabled, unusable
     // disabled: true,
 
-    // Command requires at least the given member permissions
+    // Command requires at least these member permissions (see Discord.Permissions.FLAGS)
     // permissions: 0x0,
 
     // Command will work in servers only, not in DMs
@@ -26,14 +26,14 @@ module.exports = {
     // Command will work in DMs only, not in servers
     // dmOnly: true,
 
-    // Command requires at least x arguments (whitespace-separated)
+    // Command requires at least this amount of arguments (whitespace-separated)
     // arguments: 1,
 
     // Command usage instructions
-    // usage: '<user> <role>',
+    // usage: '{add|remove} <role> {<username>|<userid>}',
 
-    // After using this command, it can only be used again after 5 seconds
-    // cooldown: 15,
+    // After using this command, it can only be used again after this time in seconds
+    // cooldown: 5,
 
     execute,
 };
