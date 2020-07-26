@@ -132,20 +132,25 @@ client.on('message', (message) => {
     // Handle command option 'cooldown'
     const now = Date.now();
     const timestamps = client.cooldowns.get(command.name);
-    const cooldownMs = (command.cooldown || Config.defaultCommandCooldown || 0) * 1000;
+    const cooldownAmount = (command.cooldown || Config.defaultCommandCooldown || 0) * 1000;
 
     if (timestamps.has(message.author.id)) {
-        const expirationTime = timestamps.get(message.author.id) + cooldownMs;
+        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
         if (now < expirationTime) {
-            const timeLeft = (expirationTime - now) / 1000;
-            message.reply(`I'm not allowed to spam, try using the \`${command.name}\` command again in ${timeLeft.toFixed(1)} more second(s).`);
+            const timeLeft = expirationTime - now;
+            const reply = `I'm not allowed to spam, try using the \`${command.name}\` command again in ${(timeLeft / 1000).toFixed(1)} more second(s).`;
+            message.reply(reply).then((msg) => {
+                msg.delete({ timeout: timeLeft });
+            });
             return;
         }
     }
 
     timestamps.set(message.author.id, now);
-    setTimeout(() => timestamps.delete(message.author.id), cooldownMs);
+    setTimeout(() => {
+        timestamps.delete(message.author.id);
+    }, cooldownAmount);
 
     // Execute the command
     try {
