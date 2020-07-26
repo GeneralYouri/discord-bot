@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { Config } = require('./../config-handler.js');
+const { Config } = require('../config-handler.js');
 
 const execute = async function execute(message) {
     const action = Config.adultMode ? '/getrandomadult' : '/getrandom';

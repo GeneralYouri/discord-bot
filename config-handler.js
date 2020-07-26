@@ -34,7 +34,7 @@ const loadConfig = function loadConfig() {
 
 // Strip custom parsing rules and write to config.json
 const storeConfig = function storeConfig() {
-    const newConfig = Object.assign({}, Config);
+    const newConfig = { ...Config };
 
     const configJson = JSON.stringify(newConfig, null, 4);
     try {

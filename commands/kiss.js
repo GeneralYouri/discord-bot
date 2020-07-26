@@ -1,4 +1,4 @@
-const { Config } = require('./../config-handler.js');
+const { Config } = require('../config-handler.js');
 
 const execute = function execute(message) {
     let str = message.author;

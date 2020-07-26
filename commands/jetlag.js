@@ -1,4 +1,4 @@
-const { Config, storeConfig } = require('./../config-handler');
+const { Config, storeConfig } = require('../config-handler');
 
 const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
 const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];

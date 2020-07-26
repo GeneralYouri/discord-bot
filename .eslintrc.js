@@ -23,11 +23,14 @@ module.exports = {
         // Simple function bodies can sometimes still be complex enough to benefit of the extra readability provided by a simple newline
         'arrow-body-style': 'off',
 
+        // Allow omission of parens around a singular arrow function argument unless the arrow function has a block body
+        'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
+
         // Even AirBnB themselves allow this, just use with caution
         'no-bitwise': 'off',
 
         // Constant loop conditions can be useful; like when there must be other code before and after the break condition
-        'no-constant-condition': ['off', { 'checkLoops': false }],
+        'no-constant-condition': ['off', { checkLoops: false }],
 
         // Another rule not specified by AirBnB themselves; continues can be useful to prevent excessive tabbing and separate logic
         'no-continue': 'off',
@@ -38,6 +41,9 @@ module.exports = {
 
         // This seems like a fairly stupid rule to enable; it disables simple anonymous functions and arrow functions, even when only used as callback
         'no-loop-func': 'off',
+
+        // Allow a maximum of 2 consecutive empty lines, with one at the end and none at the start of the file
+        'no-multiple-empty-lines': ['error', { max: 2, maxBOF: 0, maxEOF: 0 }],
 
         // Operator precedence is a thing for a reason; there are plenty of cases where forcing extra brackets does not lead to an improvement
         'no-mixed-operators': 'off',

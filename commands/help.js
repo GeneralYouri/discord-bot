@@ -1,4 +1,4 @@
-const { Config } = require('./../config-handler.js');
+const { Config } = require('../config-handler.js');
 
 const execute = async function execute(message, commandName, name) {
     const data = [];
