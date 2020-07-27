@@ -13,7 +13,7 @@ const execute = function execute(msg, commandName, reloadName) {
 
     delete require.cache[require.resolve(`./${command.name}.js`)];
     try {
-        // eslint-disable-next-line import/no-dynamic-require, global-require
+        /* eslint-disable-next-line global-require, import/no-dynamic-require */
         const newCommand = require(`./${command.name}.js`);
         msg.client.commands.set(newCommand.name, newCommand);
         msg.react('👍');

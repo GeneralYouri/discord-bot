@@ -1,5 +1,5 @@
-const fs = require('fs');
 const Discord = require('discord.js');
+const fs = require('fs');
 const { Config } = require('./config-handler');
 
 const client = new Discord.Client();
@@ -40,27 +40,20 @@ client.on('ready', () => {
 });
 
 client.on('message', (message) => {
-    // In development mode, only work in the test server
-    if (process.env.NODE_ENV === 'development' && (!message.guild || message.guild.id !== Config.devModeGuildID)) {
-        return;
-    }
+    // With sudo, always work regardless of mode
+    if (message.content.startsWith('sudo ')) {
+        message.content = message.content.slice(5);
+    } else {
+        const inDevGuild = message.guild && message.guild.id === Config.devModeGuildID;
 
-    // In production mode, require sudo to work in the test server
-    if (process.env.NODE_ENV !== 'development' && message.guild && message.guild.id === Config.devModeGuildID) {
-        if (message.content.startsWith('sudo ')) {
-            message.content = message.content.slice(5);
-        } else {
+        // In development mode only work in the test server; Otherwise work everywhere but the test server
+        if ((process.env.NODE_ENV === 'development') === !inDevGuild) {
             return;
         }
     }
 
-    // Ignore messages from bots (including ourselves)
-    if (message.author.bot) {
-        return;
-    }
-
-    // Ignore messages from blacklisted users
-    if (Config.blacklistUsers.includes(message.author.id)) {
+    // Ignore messages from bots (including ourselves), and blacklisted users
+    if (message.author.bot || Config.blacklistUsers.includes(message.author.id)) {
         return;
     }
 
@@ -99,12 +92,6 @@ client.on('message', (message) => {
         return;
     }
 
-    // Handle command option 'permissions'
-    if (command.permissions && !message.member.hasPermission(command.permission)) {
-        message.reply('You\'re not the boss of me! (You\'re not allowed to use this command.)');
-        return;
-    }
-
     // Handle command option 'guildOnly'
     if (command.guildOnly && !['text', 'voice', 'category'].includes(message.channel.type)) {
         message.reply('I can only do this inside servers.');
@@ -114,6 +101,12 @@ client.on('message', (message) => {
     // Handle command option 'dmOnly'
     if (command.dmOnly && !['dm', 'group'].includes(message.channel.type)) {
         message.reply('I can only do this inside DMs.');
+        return;
+    }
+
+    // Handle command option 'permissions' (only applies to guild commands)
+    if (command.permissions && (!['text', 'voice', 'category'].includes(message.channel.type) || !message.member.hasPermission(command.permission))) {
+        message.reply('You\'re not the boss of me! (You\'re not allowed to use this command.)');
         return;
     }
 
@@ -163,6 +156,7 @@ client.on('message', (message) => {
     console.log(`Handled command (${commandName}): "${message.content}"`);
 });
 
+process.on('unhandledRejection', e => console.error('Unhandled promise rejection:', (new Date()).toString(), e));
 client.on('error', e => console.error('Received an unexpected error', (new Date()).toString(), e));
 client.on('warn', e => console.warn('Received an unexpected warning', (new Date()).toString(), e));
 if (process.env.NODE_ENV === 'development') {
