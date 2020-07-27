@@ -16,7 +16,7 @@ const execute = function execute(msg, commandName, reloadName) {
         // eslint-disable-next-line import/no-dynamic-require, global-require
         const newCommand = require(`./${command.name}.js`);
         msg.client.commands.set(newCommand.name, newCommand);
-        msg.channel.send(`The command \`${command.name}\` was reloaded!`);
+        msg.react('👍');
     } catch (error) {
         console.error(error);
         msg.channel.send(`There was an error while reloading the command \`${command.name}\`:\n\`${error.message}\``);

@@ -1,5 +1,5 @@
 const execute = function execute(message) {
-    message.channel.send('ok?');
+    message.react('🆗');
 };
 
 module.exports = {

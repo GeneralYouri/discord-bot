@@ -20,6 +20,14 @@ const execute = function execute(msg, commandName, type = undefined, name, delay
 
     if (!type || type === 'status') {
         msg.channel.send(`Jetlag Mode is currently ${Config.jetlagMode ? `enabled for ${userSet.size} users` : 'disabled'}`);
+    } else if (type === 'on') {
+        Config.jetlagMode = true;
+        storeConfig();
+        msg.react('👍');
+    } else if (type === 'off') {
+        Config.jetlagMode = false;
+        storeConfig();
+        msg.react('👍');
     } else if (type === 'list') {
         const ids = Array.from(userSet.keys());
         const data = ids.map(id => `${msg.client.users.get(id).username} with a delay of ${userSet.get(id)} hrs`);
@@ -33,12 +41,12 @@ const execute = function execute(msg, commandName, type = undefined, name, delay
         userSet.set(msg.author.id, delay);
         Config.jetlagUsers = Object.fromEntries(userSet.entries());
         storeConfig();
-        msg.channel.send(`Added Jetlag Mode for ${msg.author.username} with delay ${delay}`);
+        msg.react('👍');
     } else if (type === 'quit') {
         userSet.delete(msg.author.id);
         Config.jetlagUsers = Object.fromEntries(userSet.entries());
         storeConfig();
-        msg.channel.send(`Removed Jetlag Mode for ${msg.author.username}`);
+        msg.react('👍');
     } else if (type === 'add') {
         if (!delay) {
             msg.reply('You didn\'t specify a jetlag delay');
@@ -48,28 +56,20 @@ const execute = function execute(msg, commandName, type = undefined, name, delay
         userSet.set(id, delay);
         Config.jetlagUsers = Object.fromEntries(userSet.entries());
         storeConfig();
-        msg.channel.send(`Added Jetlag Mode for ${name} with delay ${delay}`);
+        msg.react('👍');
     } else if (type === 'remove') {
         const { id } = msg.client.users.find(user => user.username === name);
         userSet.delete(id);
         Config.jetlagUsers = Object.fromEntries(userSet.entries());
         storeConfig();
-        msg.channel.send(`Removed Jetlag Mode for ${name}`);
-    } else if (type === 'on') {
-        Config.jetlagMode = true;
-        storeConfig();
-        msg.channel.send('Enabled Jetlag Mode');
-    } else if (type === 'off') {
-        Config.jetlagMode = false;
-        storeConfig();
-        msg.channel.send('Disabled Jetlag Mode');
+        msg.react('👍');
     }
 };
 
 module.exports = {
     name: 'jetlag',
     description: 'Configure Jetlag Mode',
-    usage: '{status|list|quit|on|off} | join <delay> | add <user> <delay> | remove <user>',
+    usage: '{status|on|off|list|quit} | join <delay> | add <user> <delay> | remove <user>',
     cooldown: 5,
     execute,
 };

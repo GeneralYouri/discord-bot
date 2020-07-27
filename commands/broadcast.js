@@ -10,6 +10,7 @@ const execute = function execute(message, commandName, ...args) {
             member.send(str, { split: true });
         }
     });
+    message.react('👍');
 };
 
 module.exports = {
