@@ -18,8 +18,8 @@ const execute = function execute(message, commandName, timeZone) {
     };
 
     const formatter = new Intl.DateTimeFormat('nl-NL', options);
-    const timeStr = formatter.format(new Date());
-    message.channel.send(`It's currently ${timeStr}`);
+    const timeString = formatter.format(new Date());
+    message.channel.send(`It's currently ${timeString}`);
 };
 
 // TODO: Accept more commonly used timezone names like UTC61 or GMT+1

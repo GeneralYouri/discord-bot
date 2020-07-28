@@ -2,12 +2,12 @@ const Discord = require('discord.js');
 
 const PERMS = Discord.Permissions.FLAGS;
 
-const execute = function execute(msg, commandName, reloadName) {
+const execute = function execute(message, commandName, reloadName) {
     reloadName = reloadName.toLowerCase();
-    const command = msg.client.commands.get(reloadName) || msg.client.commands.find(cmd => cmd.alias && cmd.alias.includes(reloadName));
+    const command = message.client.commands.get(reloadName) || message.client.commands.find(cmd => cmd.alias && cmd.alias.includes(reloadName));
 
     if (!command) {
-        msg.channel.send(`The command \`${reloadName}\` doesn't exist.`);
+        message.channel.send(`The command \`${reloadName}\` doesn't exist.`);
         return;
     }
 
@@ -15,11 +15,11 @@ const execute = function execute(msg, commandName, reloadName) {
     try {
         /* eslint-disable-next-line global-require, import/no-dynamic-require */
         const newCommand = require(`./${command.name}.js`);
-        msg.client.commands.set(newCommand.name, newCommand);
-        msg.react('👍');
+        message.client.commands.set(newCommand.name, newCommand);
+        message.react('👍');
     } catch (error) {
         console.error(error);
-        msg.channel.send(`There was an error while reloading the command \`${command.name}\`:\n\`${error.message}\``);
+        message.channel.send(`There was an error while reloading the command \`${command.name}\`:\n\`${error.message}\``);
     }
 };
 

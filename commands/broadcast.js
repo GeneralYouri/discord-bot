@@ -3,11 +3,11 @@ const Discord = require('discord.js');
 const PERMS = Discord.Permissions.FLAGS;
 
 const execute = function execute(message, commandName, ...args) {
-    const str = args.join(' ').toLowerCase();
+    const broadcast = args.join(' ').toLowerCase();
     message.guild.members.forEach((member) => {
         console.log(member);
         if (!member.user.bot) {
-            member.send(str, { split: true });
+            member.send(broadcast, { split: true });
         }
     });
     message.react('👍');
