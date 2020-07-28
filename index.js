@@ -94,18 +94,21 @@ client.on('message', (message) => {
 
     // Handle command option 'guildOnly'
     if (command.guildOnly && !['text', 'voice', 'category'].includes(message.channel.type)) {
+        message.react('❌');
         message.reply('I can only do this inside servers.');
         return;
     }
 
     // Handle command option 'dmOnly'
     if (command.dmOnly && !['dm', 'group'].includes(message.channel.type)) {
+        message.react('❌');
         message.reply('I can only do this inside DMs.');
         return;
     }
 
     // Handle command option 'permissions' (only applies to guild commands)
     if (command.permissions && (!['text', 'voice', 'category'].includes(message.channel.type) || !message.member.hasPermission(command.permission))) {
+        message.react('❌');
         message.reply('You\'re not the boss of me! (You\'re not allowed to use this command.)');
         return;
     }
@@ -118,6 +121,7 @@ client.on('message', (message) => {
             reply.push(`**Usage:** \`${Config.prefix}${command.name} ${command.usage}\``);
         }
 
+        message.react('❌');
         message.reply(reply.join('\n'));
         return;
     }
@@ -133,6 +137,7 @@ client.on('message', (message) => {
         if (now < expirationTime) {
             const timeLeft = expirationTime - now;
             const reply = `I'm not allowed to spam, try using the \`${command.name}\` command again in ${(timeLeft / 1000).toFixed(1)} more second(s).`;
+            message.react('❌');
             message.reply(reply).then((msg) => {
                 msg.delete({ timeout: timeLeft });
             });

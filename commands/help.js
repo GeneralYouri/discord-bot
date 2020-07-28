@@ -19,12 +19,14 @@ const execute = async function execute(message, commandName, name) {
         } catch (error) {
             console.error(`Could not send help DM to ${message.author.tag}.`);
             console.error(error);
+            message.react('❌');
             message.reply('it seems like I can\'t DM you. Do you have DMs disabled?');
         }
     } else {
         // List command-specific help
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
         if (!command || command.hidden) {
+            message.react('❌');
             message.reply('I don\'t know that command, can you teach me?');
             return;
         }

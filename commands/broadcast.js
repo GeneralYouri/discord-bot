@@ -5,7 +5,6 @@ const PERMS = Discord.Permissions.FLAGS;
 const execute = function execute(message, commandName, ...args) {
     const broadcast = args.join(' ').toLowerCase();
     message.guild.members.forEach((member) => {
-        console.log(member);
         if (!member.user.bot) {
             member.send(broadcast, { split: true });
         }

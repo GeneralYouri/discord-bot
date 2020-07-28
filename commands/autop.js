@@ -14,6 +14,7 @@ const execute = function execute(message, commandName, type = undefined, name) {
     }
 
     if (requiresAdmin.includes(type) && !Config.adminUsers.includes(message.author.id)) {
+        message.react('❌');
         message.reply('You\'re not allowed to use this command');
         return;
     }

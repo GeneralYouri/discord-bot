@@ -7,6 +7,7 @@ const execute = function execute(message, commandName, reloadName) {
     const command = message.client.commands.get(reloadName) || message.client.commands.find(cmd => cmd.alias && cmd.alias.includes(reloadName));
 
     if (!command) {
+        message.react('❌');
         message.channel.send(`The command \`${reloadName}\` doesn't exist.`);
         return;
     }
@@ -19,6 +20,7 @@ const execute = function execute(message, commandName, reloadName) {
         message.react('👍');
     } catch (error) {
         console.error(error);
+        message.react('❌');
         message.channel.send(`There was an error while reloading the command \`${command.name}\`:\n\`${error.message}\``);
     }
 };
