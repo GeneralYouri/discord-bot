@@ -31,7 +31,6 @@
         "eslint-plugin-import": "^2.22.0"
     },
     "dependencies": {
-        "big.js": "^5.2.2",
         "discord.js": "^12.2.0",
         "node-fetch": "^2.6.0"
     }
