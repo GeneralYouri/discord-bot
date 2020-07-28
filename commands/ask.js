@@ -17,7 +17,7 @@ const execute = function execute(message, commandName, ...args) {
         return;
     }
 
-    message.reply('How am I supposed to know?!');
+    message.reply(question.answer);
 };
 
 module.exports = {
