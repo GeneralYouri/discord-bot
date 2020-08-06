@@ -6,8 +6,12 @@ module.exports = {
         node: true,
     },
     parserOptions: {
-        ecmaVersion: 2018,
+        ecmaVersion: 2020,
         // sourceType: 'module',
+    },
+    // For some reason this is needed to recognise BigInt despite using ES2020
+    globals: {
+        BigInt: true,
     },
     rules: {
         // Allow debugger during development
