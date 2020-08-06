@@ -4,7 +4,7 @@ const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
 const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];
 const requiresAdmin = ['add', 'remove', 'on', 'off'];
 
-const userSet = new Map(Object.entries(Config.jetlagUsers));
+const userSet = new Map(Object.entries(Config.jetlagUsers ?? {}));
 
 const execute = function execute(message, commandName, type = undefined, name, delay) {
     if (truthies.includes(type)) {

@@ -1,7 +1,7 @@
 const variations = ['Ping', 'Ping.', 'Ping!', 'Ping?', 'PING', '~~Pong~~Ping', 'ᵖᶦᶰᵍ', '*miss*'];
 
 const execute = function execute(message) {
-    const index = Math.floor(Math.random() * variations.length);
+    const index = Math.trunc(Math.random() * variations.length);
     message.reply(variations[index]);
 };
 

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 
-const PERMS = Discord.Permissions.FLAGS;
+const PERMISSIONS = Discord.Permissions.FLAGS;
 
 const execute = function execute(message, commandName, amountStr) {
     const amount = parseInt(amountStr, 10);
@@ -21,7 +21,7 @@ const execute = function execute(message, commandName, amountStr) {
 module.exports = {
     name: 'prune',
     description: 'Delete messages',
-    permissions: PERMS.MANAGE_MESSAGES,
+    permissions: PERMISSIONS.MANAGE_MESSAGES,
     guildOnly: true,
     arguments: 1,
     usage: '<amount>',

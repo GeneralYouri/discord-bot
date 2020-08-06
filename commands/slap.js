@@ -5,8 +5,8 @@ const execute = function execute(message) {
     const target = (userMentions.size && userMentions.first() !== message.author) ? userMentions.first() : 'themselves';
     let str = `${message.author.username} slaps ${target} with a stinky sock`;
 
-    if (Array.isArray(Config.bodyParts) && Config.bodyParts.length > 1) {
-        const bodyPart = Config.bodyParts[Math.floor(Math.random() * Config.bodyParts.length)];
+    if (Config.bodyParts?.length > 1) {
+        const bodyPart = Config.bodyParts[Math.trunc(Math.random() * Config.bodyParts.length)];
         str += ` on the ${bodyPart}`;
     }
 

@@ -24,7 +24,7 @@ const execute = async function execute(message, commandName, name) {
         }
     } else {
         // List command-specific help
-        const command = commands.get(name) || commands.find(c => c.alias && c.alias.includes(name));
+        const command = commands.get(name) ?? commands.find(cmd => cmd.alias && cmd.alias.includes(name));
         if (!command || command.hidden) {
             message.react('❌');
             message.reply('I don\'t know that command, can you teach me?');

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 
-const PERMS = Discord.Permissions.FLAGS;
+const PERMISSIONS = Discord.Permissions.FLAGS;
 
 const execute = function execute(message, commandName, ...args) {
     const broadcast = args.join(' ').toLowerCase();
@@ -15,7 +15,7 @@ const execute = function execute(message, commandName, ...args) {
 module.exports = {
     name: 'broadcast',
     description: 'Send a server-wide DM',
-    permissions: PERMS.MENTION_EVERYONE,
+    permissions: PERMISSIONS.MENTION_EVERYONE,
     guildOnly: true,
     arguments: 1,
     usage: '<text message>',

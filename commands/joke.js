@@ -5,8 +5,8 @@ const execute = async function execute(message) {
     const action = Config.adultMode ? '/getrandomadult' : '/getrandom';
 
     try {
-        const res = await fetch('https://claystk.info/jokes' + action);
-        const joke = await res.json();
+        const result = await fetch('https://claystk.info/jokes' + action);
+        const joke = await result.json();
         message.channel.send(`${joke.Text}`);
     } catch (error) {
         console.error('Couldn\'t fetch a joke.');

@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 
-const PERMS = Discord.Permissions.FLAGS;
+const PERMISSIONS = Discord.Permissions.FLAGS;
 
 const execute = function execute(message, commandName, reloadName) {
     reloadName = reloadName.toLowerCase();
-    const command = message.client.commands.get(reloadName) || message.client.commands.find(cmd => cmd.alias && cmd.alias.includes(reloadName));
+    const command = message.client.commands.get(reloadName) ?? message.client.commands.find(cmd => cmd.alias && cmd.alias.includes(reloadName));
 
     if (!command) {
         message.react('❌');
@@ -28,7 +28,7 @@ const execute = function execute(message, commandName, reloadName) {
 module.exports = {
     name: 'reload',
     description: 'Reload the given command',
-    permissions: PERMS.ADMINISTRATOR,
+    permissions: PERMISSIONS.ADMINISTRATOR,
     arguments: 1,
     usage: '<command name>',
     cooldown: 5,

@@ -4,7 +4,7 @@ const truthies = ['true', 'on', 'enable', 'enabled', 'active', 'activate'];
 const falsies = ['false', 'off', 'disable', 'disabled', 'deactive', 'deactivate'];
 const requiresAdmin = ['add', 'remove', 'on', 'off'];
 
-const userSet = new Set(Config.autoPUsers);
+const userSet = new Set(Config.autoPUsers ?? []);
 
 const execute = function execute(message, commandName, type = undefined, name) {
     if (truthies.includes(type)) {
@@ -13,7 +13,7 @@ const execute = function execute(message, commandName, type = undefined, name) {
         type = 'off';
     }
 
-    if (requiresAdmin.includes(type) && !Config.adminUsers.includes(message.author.id)) {
+    if (requiresAdmin.includes(type) && !Config.adminUsers?.includes?.(message.author.id)) {
         message.react('❌');
         message.reply('You\'re not allowed to use this command');
         return;

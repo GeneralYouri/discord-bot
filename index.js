@@ -11,13 +11,13 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 for (const file of commandFiles) {
     /* eslint-disable-next-line global-require, import/no-dynamic-require */
     const command = require(`./commands/${file}`);
-    if (command.disabled || (Array.isArray(Config.blacklistCommands) && Config.blacklistCommands.includes(command.name))) {
+    if (command.disabled || Config.blacklistCommands?.includes?.(command.name)) {
         continue;
     }
 
     client.commands.set(command.name, command);
     client.cooldowns.set(command.name, new Discord.Collection());
-    if (Array.isArray(Config.hiddenCommands) && Config.hiddenCommands.includes(command.name)) {
+    if (Config.hiddenCommands?.includes?.(command.name)) {
         command.hidden = true;
     }
 }
@@ -53,21 +53,22 @@ client.on('message', (message) => {
     }
 
     // Ignore messages from bots (including ourselves), and blacklisted users
-    if (message.author.bot || Config.blacklistUsers.includes(message.author.id)) {
+    if (message.author.bot || Config.blacklistUsers?.includes?.(message.author.id)) {
         return;
     }
 
     // Handle AutoP messages
     const sanitized = sanitize(message.content);
-    if (Config.autoP && Array.isArray(Config.autoPUsers) && Config.autoPUsers.includes(message.author.id) && message.content !== sanitized) {
+    if (Config.autoP && Config.autoPUsers?.includes?.(message.author.id) && message.content !== sanitized) {
         message.channel.send(`You said: ${sanitize(message.cleanContent)}`);
     }
 
     // Handle Jetlag Mode messages
-    if (Config.jetlagMode && Config.jetlagUsers && Config.jetlagUsers[message.author.id]) {
+    if (Config.jetlagMode && Config.jetlagUsers?.[message.author.id]) {
         const delay = Config.jetlagUsers[message.author.id] % 24;
         setTimeout(() => {
-            if (Config.jetlagMode && Config.jetlagUsers && Config.jetlagUsers[message.author.id]) {
+            // Repeat the config check here as this code can run up to 24hrs later, during which config may have changed
+            if (Config.jetlagMode && Config.jetlagUsers?.[message.author.id]) {
                 message.channel.send(`*${message.author.username} said ${delay}hrs ago:*\n${sanitized}`);
             }
         }, delay * 60 * 60 * 1000);
@@ -84,7 +85,7 @@ client.on('message', (message) => {
     const commandName = args.shift().toLowerCase();
 
     // Fetch the command
-    const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.alias && cmd.alias.includes(commandName));
+    const command = client.commands.get(commandName) ?? client.commands.find(cmd => cmd.alias && cmd.alias.includes(commandName));
     if (!command) {
         if (commandName !== '') {
             message.reply(`I don't know what to do with you. Try \`${Config.prefix}help\` to see what I can do.`);
@@ -129,7 +130,7 @@ client.on('message', (message) => {
     // Handle command option 'cooldown'
     const now = Date.now();
     const timestamps = client.cooldowns.get(command.name);
-    const cooldownAmount = (command.cooldown || Config.defaultCommandCooldown || 0) * 1000;
+    const cooldownAmount = (command.cooldown ?? Config.defaultCommandCooldown ?? 0) * 1000;
 
     if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
