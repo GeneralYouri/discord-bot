@@ -24,7 +24,7 @@ const execute = async function execute(message, commandName, name) {
         }
     } else {
         // List command-specific help
-        const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
+        const command = commands.get(name) || commands.find(c => c.alias && c.alias.includes(name));
         if (!command || command.hidden) {
             message.react('❌');
             message.reply('I don\'t know that command, can you teach me?');
@@ -52,7 +52,7 @@ const execute = async function execute(message, commandName, name) {
 module.exports = {
     name: 'help',
     description: 'List all of my commands or get info about a specific command.',
-    aliases: ['commands'],
+    alias: ['commands'],
     usage: '<command name>',
     execute,
 };
