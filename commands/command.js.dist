@@ -1,5 +1,11 @@
 const { Config } = require('../config-handler.js');
 
+// Runs once on bot startup
+const setup = function setup() {
+    // Setup everything needed to be able to run the command
+};
+
+// Runs for any user message matching the command syntax
 const execute = function execute(message, commandName, ...args) {
     // Make the command do something
 };
@@ -34,6 +40,8 @@ module.exports = {
 
     // After using this command, it can only be used again after this time in seconds
     // cooldown: 5,
+
+    setup,
 
     execute,
 };

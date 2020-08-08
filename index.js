@@ -15,6 +15,7 @@ for (const file of commandFiles) {
         continue;
     }
 
+    command.setup?.(client);
     client.commands.set(command.name, command);
     client.cooldowns.set(command.name, new Discord.Collection());
     if (Config.hiddenCommands?.includes?.(command.name)) {
