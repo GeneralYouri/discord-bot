@@ -140,7 +140,7 @@ client.on('message', (message) => {
             const reply = `I'm not allowed to spam, try using the \`${command.name}\` command again in ${(timeLeft / 1000).toFixed(1)} more second(s).`;
             message.react('❌');
             message.reply(reply).then((msg) => {
-                msg.delete({ timeout: timeLeft });
+                msg.delete({ timeout: Math.max(3000, timeLeft) });
             });
             return;
         }
