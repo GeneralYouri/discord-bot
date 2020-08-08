@@ -11,6 +11,10 @@
     "autoPUsers": ["id1", "id2"],
     "jetlagMode": true,
     "jetlagUsers": {"id1": "delay hours", "id2": "delay hours"},
+    "prayerTimer": true,
+    "prayerTimerUsers": ["id1", "id2"],
+    "prayerTimerReminderTime": 1,
+    "prayerTimerGlobal": false,
     "debtStart": 0,
     "adultMode": false,
     "bodyParts": ["face", "head", "arm", "stomach", "knee", "elbow", "thigh", "neck"]

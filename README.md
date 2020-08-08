@@ -20,20 +20,25 @@ node .
 - **`blacklistCommands`** The command names (not aliases) to disable (will also disable all aliases). A disabled command can't be used AND won't show up anywhere.
 - **`blacklistUsers`** User IDs who are not allowed to interact with the bot.
 - **`adminUsers`** User IDs who have special bot privileges, generally for administrative purposes.
-- **`autoP`** Toggles a special feature that automatically sanitizes messages from specific users by replacing specific characters.
+- **`autoP`** Toggles a custom feature that automatically sanitizes messages from users by replacing specific characters.
 - **`autoPUsers`** User IDs for whom to use the autoP feature, if enabled.
-- **`jetlagMode`** Toggles a special feature that accounts for timezone differences with certain users, by reposting their messages in the appropriate time for others.
-- **`jetlagUsers`** User IDs for whom to use the jetlag feature, if enabled. Also includes the user-specific jetlag time delays to be used.
-- **`debtStart`** The (approximate) time when Djessey's debt interest started counting.
-- **`adultMode`** Adult Mode enables various adult-only (ie not child-safe) features.
-- **`bodyParts`** Body part names are used by fun commands, for example: "x punched y in the face".
+- **`jetlagMode`** Toggles a custom feature that accounts for timezone differences with users, by reposting their messages in the appropriate time for others.
+- **`jetlagUsers`** User IDs for whom to use the jetlag feature, if enabled. Also includes the user-specific jetlag time delays to be used, in hours.
+- **`prayerTimer`** Toggles a custom feature that reminds users about Islam prayer times.
+- **`prayerTimerUsers`** User IDs for whom to use the prayer timer feature, if enabled.
+- **`prayerTimerReminderTime`** The amount of warning time to give when reminding users when the current prayer is ending, in hours.
+- **`prayerTimerGlobal`** Whether to also send prayer reminder messages globally, by posting them in the main channel.
+- **`debtStart`** The (approximate) Unix timestamp when Djessey's debt interest started counting.
+- **`adultMode`** Enables various adult-only (ie not child-safe) features.
+- **`bodyParts`** Names of body parts to be used by fun commands, for example: "x punched y in the face".
 
 ---
 
 ## TODO
 
-- Replace config option `adminUsers` with Permissions.
-- Add remind-me type feature for prayer times.
+- Replace config option `adminUsers` with Permissions
+- Add remind-me type feature for prayer times
+- Add function for loose username search
 
 - Session handling via PM2
 - Persistent storage like MongoDB

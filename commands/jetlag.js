@@ -6,7 +6,7 @@ const requiresAdmin = ['add', 'remove', 'on', 'off'];
 
 const userSet = new Map(Object.entries(Config.jetlagUsers ?? {}));
 
-const execute = function execute(message, commandName, type = undefined, name, delay) {
+const execute = function execute(message, commandName, type = undefined, name = undefined, delay = undefined) {
     if (truthies.includes(type)) {
         type = 'on';
     } else if (falsies.includes(type)) {

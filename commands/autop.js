@@ -6,7 +6,7 @@ const requiresAdmin = ['add', 'remove', 'on', 'off'];
 
 const userSet = new Set(Config.autoPUsers ?? []);
 
-const execute = function execute(message, commandName, type = undefined, name) {
+const execute = function execute(message, commandName, type = undefined, name = undefined) {
     if (truthies.includes(type)) {
         type = 'on';
     } else if (falsies.includes(type)) {
