@@ -18,8 +18,8 @@ const displayTimeConfig = (hours) => {
     }
 };
 
-const channelID = 344155314205097986;
-const sendReminder = (client, prayer, message) => {
+const channelID = '344155314205097986';
+const sendReminder = async (client, prayer, message) => {
     if (!Config.prayerTimer) {
         return;
     }
@@ -29,7 +29,8 @@ const sendReminder = (client, prayer, message) => {
         user.send(message);
     });
     if (Config.prayerTimerGlobal) {
-        client.channels.get(channelID).send(message);
+        const channel = await client.channels.fetch(channelID);
+        channel.send(message);
     }
 };
 
