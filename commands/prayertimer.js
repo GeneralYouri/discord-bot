@@ -5,16 +5,12 @@ const { Config, storeConfig } = require('../config-handler');
 
 const displayTimeConfig = (hours) => {
     const seconds = hours * 60 * 60;
-    const s = (seconds % 60).toString().padStart(2, '0');
-    const m = Math.trunc(seconds / 60).toString().padStart(2, '0');
-    const h = Math.trunc(hours).toString().padStart(2, '0');
-
     if (hours >= 1) {
-        return `${h}:${m}:${s} hours`;
+        return `${hours} hours`;
     } else if (seconds >= 60) {
-        return `${m}:${s} minutes`;
+        return `${hours * 60} minutes`;
     } else {
-        return `${s} seconds`;
+        return `${seconds} seconds`;
     }
 };
 
