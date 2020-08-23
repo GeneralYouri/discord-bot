@@ -12,11 +12,12 @@ const fs = require('fs');
  * @property {boolean} [autoP] - Toggles a custom feature that automatically sanitizes messages from specific users by replacing specific characters.
  * @property {string} [autoPusers] - User IDs for whom to use the autoP feature, if enabled.
  * @property {boolean} [jetlagMode] - Toggles a custom feature that accounts for timezone differences with users, by reposting their messages in the appropriate time for others.
- * @property {[string]} [jetlagUsers] - User IDs for whom to use the jetlag feature, if enabled. Also includes the user-specific jetlag time delays to be used, in hours.
+ * @property {{string: number}} [jetlagUsers] - User IDs for whom to use the jetlag feature, if enabled. Also includes the user-specific jetlag time delays to be used, in hours.
  * @property {boolean} [prayerTimer] - Toggles a custom feature that reminds users about Islam prayer times.
  * @property {[string]} [prayerTimerUsers] - User IDs for whom to use the prayer timer feature, if enabled.
- * @property {[string]} [prayerTimerReminderTime] - The amount of warning time to give when reminding users when the current prayer is ending, in hours.
- * @property {[string]} [prayerTimerGlobal] - Whether to also send prayer reminder messages globally, by posting them in the main channel.
+ * @property {number} [prayerTimerReminderTime] - The amount of warning time to give when reminding users when the current prayer is ending, in hours.
+ * @property {boolean} [prayerTimerGlobal] - Whether to also send prayer reminder messages "globally", as in, in a public channel.
+ * @property {string} [prayerTimerGlobalChannelID] - The channel ID to which the global prayer reminder messages are sent.
  * @property {number} [debtStart] - The (approximate) Unix timestamp when Djessey's debt interest started counting.
  * @property {boolean} [adultMode] - Enables various adult-only (ie not child-safe) features.
  * @property {[string]} [bodyParts] - Names of body parts to be used by fun commands, for example: "x punched y in the face".
@@ -27,12 +28,12 @@ let Config;
 const loadConfig = function loadConfig() {
     try {
         /* eslint-disable-next-line global-require */
-        const config = require('./config.json');
+        const data = require('./config.json');
 
-        config.debtStart = new Date(config.debtStart);
+        data.debtStart = new Date(data.debtStart);
 
-        Config = config;
-        return config;
+        Config = data;
+        return data;
     } catch (e) {
         console.error('Could not read from config files', e);
         throw e;
@@ -41,9 +42,9 @@ const loadConfig = function loadConfig() {
 
 // Strip custom parsing rules and write to config.json
 const storeConfig = function storeConfig() {
-    const newConfig = { ...Config };
+    const data = { ...Config };
 
-    const configJson = JSON.stringify(newConfig, null, 4);
+    const configJson = JSON.stringify(data, null, 4);
     try {
         fs.writeFileSync(require.resolve('./config.json'), configJson, 'utf-8');
     } catch (e) {

@@ -27,7 +27,8 @@ node .
 - **`prayerTimer`** Toggles a custom feature that reminds users about Islam prayer times.
 - **`prayerTimerUsers`** User IDs for whom to use the prayer timer feature, if enabled.
 - **`prayerTimerReminderTime`** The amount of warning time to give when reminding users when the current prayer is ending, in hours.
-- **`prayerTimerGlobal`** Whether to also send prayer reminder messages globally, by posting them in the main channel.
+- **`prayerTimerGlobal`** Whether to also send prayer reminder messages "globally", as in, in a public channel.
+- **`prayerTimerGlobalChannelID`** The channel ID to which the global prayer reminder messages are sent.
 - **`debtStart`** The (approximate) Unix timestamp when Djessey's debt interest started counting.
 - **`adultMode`** Enables various adult-only (ie not child-safe) features.
 - **`bodyParts`** Names of body parts to be used by fun commands, for example: "x punched y in the face".

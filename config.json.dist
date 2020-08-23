@@ -15,6 +15,7 @@
     "prayerTimerUsers": ["id1", "id2"],
     "prayerTimerReminderTime": 1,
     "prayerTimerGlobal": false,
+    "prayerTimerGlobalChannelID": "",
     "debtStart": 0,
     "adultMode": false,
     "bodyParts": ["face", "head", "arm", "stomach", "knee", "elbow", "thigh", "neck"]

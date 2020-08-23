@@ -14,7 +14,6 @@ const displayTimeConfig = (hours) => {
     }
 };
 
-const channelID = '344155314205097986';
 const sendReminder = async (client, prayer, message) => {
     if (!Config.prayerTimer) {
         return;
@@ -25,7 +24,7 @@ const sendReminder = async (client, prayer, message) => {
         user.send(message);
     });
     if (Config.prayerTimerGlobal) {
-        const channel = await client.channels.fetch(channelID);
+        const channel = await client.channels.fetch(Config.prayerTimerGlobalChannelID);
         channel.send(message);
     }
 };
